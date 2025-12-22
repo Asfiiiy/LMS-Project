@@ -1,0 +1,78 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+**/node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+__tests__/
+test/
+tests/
+
+# Next.js
+.next/
+out/
+build/
+dist/
+
+# Production & Generated Files
+backend/uploads/
+backend/generated_certificates/
+backend/certificate_templates/
+backend/logs/
+logs/
+*.log
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+backend/.env
+*.env
+
+# Sensitive Files
+backend/ADD_TO_ENV.txt
+backend/STRIPE_ENV_SETUP.md
+
+# Database
+*.sql
+dump.rdb
+*.db
+*.sqlite
+
+# OS Files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Vercel
+.vercel
+
+# Temporary Files
+tmp/
+temp/
+*.tmp
+
+# Package Lock (optional - you can keep this)
+# package-lock.json
+# backend/package-lock.json

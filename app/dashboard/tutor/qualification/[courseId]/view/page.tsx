@@ -1,0 +1,22 @@
+export { default } from '@/app/dashboard/admin/qualification/[courseId]/view/page';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
