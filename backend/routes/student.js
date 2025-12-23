@@ -727,10 +727,11 @@ router.get('/:studentId/qualification-courses', cacheMiddleware(60), async (req,
              WHERE table_schema = DATABASE() AND table_name = 'qual_unit_progress' 
              AND column_name IN ('is_completed', 'completed')`
           );
-          if (progressColumnCheck.length > 0) {
+          if (progressColumnCheck.length > 0 && progressColumnCheck[0].column_name) {
             unitProgressColumn = progressColumnCheck[0].column_name;
           } else {
             hasUnitProgressTable = false; // No completion column found
+            unitProgressColumn = 'is_completed'; // Reset to default
           }
         }
       } catch (err) {

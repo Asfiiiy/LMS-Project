@@ -792,14 +792,12 @@ const StudentDashboard = () => {
 
     setLoadingChatWithTutor(true);
     try {
-      // Use dynamic API URL (same as ApiService)
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 
-                     (typeof window !== 'undefined' 
-                       ? `${window.location.protocol}//${window.location.hostname}:5000/api`
-                       : 'http://localhost:5000/api');
+      // Use dynamic API URL helper
+      const { getApiUrl } = await import('@/app/utils/apiUrl');
+      const apiUrl = getApiUrl();
       
       // Start a conversation with the tutor
-      const response = await fetch(`${apiUrl}/chat/start`, {
+      const response = await fetch(`${apiUrl}/api/chat/start`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -807,6 +805,16 @@ const StudentDashboard = () => {
           tutor_id: tutorId
         })
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        throw new Error(`Expected JSON but got ${contentType}. Response: ${text.substring(0, 100)}`);
+      }
 
       const data = await response.json();
       if (data.success && data.conversation) {

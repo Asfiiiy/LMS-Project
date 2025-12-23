@@ -120,12 +120,35 @@ const EnrollmentSetupPage = () => {
           console.error('Error fetching tutor student:', error);
         }
       } else {
-        // For admin, use admin endpoint
+        // For admin, try enrollment endpoint first, then users endpoint
         try {
-          const usersResponse = await apiService.getUsers(1, 1000);
-          student = usersResponse?.users?.find((u: any) => u.id === studentId);
-        } catch (error) {
-          console.error('Error fetching admin users:', error);
+          // Try to get from enrollment data
+          const enrollmentResponse = await apiService.getStudentEnrollment(courseId, studentId);
+          if (enrollmentResponse?.success && enrollmentResponse?.student) {
+            student = enrollmentResponse.student;
+          } else if (enrollmentResponse?.enrollment) {
+            // If enrollment exists but no student object, extract from enrollment
+            const enrollment = enrollmentResponse.enrollment;
+            student = {
+              id: enrollment.student_id || enrollment.user_id || studentId,
+              name: enrollment.student_name || enrollment.name,
+              email: enrollment.student_email || enrollment.email
+            };
+          }
+        } catch (enrollmentError) {
+          console.error('Error fetching enrollment:', enrollmentError);
+        }
+        
+        // If still not found, try users endpoint
+        if (!student) {
+          try {
+            const usersResponse = await apiService.getUsers(1, 1000);
+            if (usersResponse?.users) {
+              student = usersResponse.users.find((u: any) => u.id === studentId);
+            }
+          } catch (error) {
+            console.error('Error fetching admin users:', error);
+          }
         }
       }
       
@@ -136,7 +159,13 @@ const EnrollmentSetupPage = () => {
           email: student.email || student.student_email || student.user_email
         });
       } else {
-        console.error('Student not found. StudentId:', studentId, 'CourseId:', courseId, 'Role:', role);
+        // Set a default student info to prevent crashes
+        setStudentInfo({
+          id: studentId,
+          name: `Student #${studentId}`,
+          email: ''
+        });
+        console.warn('Student not found. Using default info. StudentId:', studentId, 'CourseId:', courseId, 'Role:', role);
       }
 
       // Fetch topics/units based on course type

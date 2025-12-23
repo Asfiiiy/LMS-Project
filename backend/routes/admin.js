@@ -150,7 +150,7 @@ router.get('/users', auth, permit('Admin'), pagination, cacheMiddleware(30), asy
       LEFT JOIN users m ON u.manager_id = m.id
       ORDER BY u.created_at DESC 
       LIMIT ? OFFSET ?
-    `, [limit, offset]);
+    `, [parseInt(limit), parseInt(offset)]);
     
     res.json({
       success: true,

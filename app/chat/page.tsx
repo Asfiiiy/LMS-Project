@@ -135,11 +135,23 @@ function ChatPageContent() {
         }
       }
 
-      const res = await fetch('http://localhost:5000/api/chat/start', {
+      const { getApiUrl } = await import('../utils/apiUrl');
+      const apiUrl = getApiUrl();
+      const res = await fetch(`${apiUrl}/api/chat/start`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      const contentType = res.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await res.text();
+        throw new Error(`Expected JSON but got ${contentType}. Response: ${text.substring(0, 100)}`);
+      }
 
       const data = await res.json();
       if (data.success) {
