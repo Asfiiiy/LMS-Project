@@ -51,7 +51,7 @@ module.exports = {
       log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
       merge_logs: true,
       autorestart: true,
-      max_memory_restart: '4G',    // Optimized for 10k-15k active users
+      max_memory_restart: 4096,    // 4GB in MB - Optimized for 10k-15k active users
       min_uptime: '10s',          // Minimum uptime before considering stable
       max_restarts: 10,           // Max restarts in 1 minute
       restart_delay: 4000,        // Delay between restarts
@@ -75,7 +75,7 @@ module.exports = {
       log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
       merge_logs: true,
       autorestart: true,
-      max_memory_restart: '1.2G',  // Increased for certificate processing
+      max_memory_restart: 1228,    // 1.2GB in MB - Increased for certificate processing
       min_uptime: '10s',
       max_restarts: 10,
       restart_delay: 4000,
