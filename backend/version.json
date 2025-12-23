@@ -1,6 +1,0 @@
-{
-  "version": "1.0.0",
-  "releaseDate": "2025-11-20",
-  "notes": "Initial release with caching, rate limiting, health monitor"
-}
-

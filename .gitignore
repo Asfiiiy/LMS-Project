@@ -1,11 +1,57 @@
-# Dependencies
+# ==========================================
+# INSPIRE LMS - .gitignore
+# Only commit files that developers write
+# ==========================================
+
+# ============ Dependencies ============
 node_modules/
-backend/node_modules/
 **/node_modules/
 .pnp
 .pnp.js
+package-lock.json
+backend/package-lock.json
 
-# Testing
+# ============ Build Output ============
+.next/
+out/
+build/
+dist/
+.turbo/
+
+# ============ Environment Variables ============
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# ============ Database Files ============
+*.sql
+!backend/sql/schema.sql
+!backend/sql/initial-setup.sql
+dump.rdb
+*.db
+*.sqlite
+
+# ============ Generated/Uploaded Files ============
+backend/uploads/
+backend/generated/
+backend/generated_certificates/
+backend/certificate_templates/
+backend/temp/
+backend/test-output/
+backend/backups/
+
+# ============ Logs ============
+logs/
+*.log
+backend/logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============ Testing Files ============
 coverage/
 *.test.js
 *.test.ts
@@ -14,65 +60,66 @@ coverage/
 __tests__/
 test/
 tests/
+backend/test-*.js
+backend/*-test.js
 
-# Next.js
-.next/
-out/
-build/
-dist/
-
-# Production & Generated Files
-backend/uploads/
-backend/generated_certificates/
-backend/certificate_templates/
-backend/logs/
-logs/
-*.log
-
-# Environment Variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-backend/.env
-*.env
-
-# Sensitive Files
-backend/ADD_TO_ENV.txt
-backend/STRIPE_ENV_SETUP.md
-
-# Database
-*.sql
-dump.rdb
-*.db
-*.sqlite
-
-# OS Files
+# ============ OS Files ============
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 *.swp
 *.swo
 *~
 
-# IDE
+# ============ IDE Files ============
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
+*.code-workspace
 
-# Typescript
+# ============ TypeScript ============
 *.tsbuildinfo
 next-env.d.ts
 
-# Vercel
+# ============ Vercel ============
 .vercel
 
-# Temporary Files
+# ============ Temporary Files ============
 tmp/
 temp/
 *.tmp
+*.temp
 
-# Package Lock (optional - you can keep this)
-# package-lock.json
-# backend/package-lock.json
+# ============ Sensitive Documentation ============
+backend/ADD_TO_ENV.txt
+backend/STRIPE_ENV_SETUP.md
+backend/ENV_ADDITIONS.txt
+
+# ============ Migration/Schema Backups ============
+backend/migrations/
+backend/database_schema/
+backend/alter-*.sql
+backend/fix-*.sql
+backend/setup-*.sql
+
+# ============ Analysis/Debug Scripts ============
+backend/analyze-*.js
+backend/test-*.js
+backend/fix-*.js
+backend/update-*.js
+backend/testConnection.js
+
+# ============ Nested LMS Folder (Duplicate) ============
+backend/lms-app/
+
+# ============ Misc ============
+*.bak
+*.backup
+*.old
+upgrading*.txt
+version.json

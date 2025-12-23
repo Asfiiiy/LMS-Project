@@ -1,0 +1,41 @@
+{
+  "name": "lms-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@stripe/react-stripe-js": "^5.4.1",
+    "@stripe/stripe-js": "^8.5.3",
+    "@tinymce/tinymce-react": "^6.3.0",
+    "bull": "^4.16.5",
+    "docxtemplater": "^3.67.6",
+    "framer-motion": "^12.23.25",
+    "fs-extra": "^11.3.2",
+    "html-docx-js": "^0.3.1",
+    "libreoffice-convert": "^1.7.0",
+    "mammoth": "^1.11.0",
+    "next": "16.0.0",
+    "pizzip": "^3.2.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "react-icons": "^5.5.0",
+    "recharts": "^3.5.1",
+    "socket.io-client": "^4.8.1",
+    "tinymce": "^8.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
