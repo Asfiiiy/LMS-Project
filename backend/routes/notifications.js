@@ -15,7 +15,9 @@ const auth = require('../middleware/auth');
 router.get('/', auth, async (req, res) => {
   try {
     const userId = req.user.id;
-    const { limit = 50, offset = 0 } = req.query;
+    // Ensure limit and offset are always numbers
+    const limit = parseInt(req.query.limit, 10) || 50;
+    const offset = parseInt(req.query.offset, 10) || 0;
 
     // Check if notifications table exists and has related_user_id column
     let hasRelatedUserId = false;
@@ -67,7 +69,7 @@ router.get('/', auth, async (req, res) => {
 
     const [notifications] = await pool.execute(
       query,
-      [userId, parseInt(limit, 10), parseInt(offset, 10)]
+      [userId, limit, offset]
     );
 
     // Get unread count
@@ -83,9 +85,11 @@ router.get('/', auth, async (req, res) => {
     });
   } catch (error) {
     console.error('[Notifications] Error fetching notifications:', error);
+    console.error('[Notifications] Error stack:', error.stack);
     res.status(500).json({
       success: false,
-      message: 'Error fetching notifications'
+      message: 'Error fetching notifications',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 });
