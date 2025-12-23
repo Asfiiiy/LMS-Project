@@ -15,9 +15,9 @@ const auth = require('../middleware/auth');
 router.get('/', auth, async (req, res) => {
   try {
     const userId = req.user.id;
-    // Ensure limit and offset are always numbers
-    const limit = parseInt(req.query.limit, 10) || 50;
-    const offset = parseInt(req.query.offset, 10) || 0;
+    // Ensure limit and offset are always valid integers
+    const limit = Math.max(1, Math.min(1000, parseInt(req.query.limit, 10) || 50));
+    const offset = Math.max(0, parseInt(req.query.offset, 10) || 0);
 
     // Check if notifications table exists and has related_user_id column
     let hasRelatedUserId = false;
@@ -67,10 +67,20 @@ router.get('/', auth, async (req, res) => {
       LIMIT ? OFFSET ?`;
     }
 
-    const [notifications] = await pool.execute(
-      query,
-      [userId, limit, offset]
-    );
+    // Ensure all parameters are valid integers for MySQL
+    const finalLimit = isNaN(limit) ? 50 : Math.max(1, Math.min(1000, Number(limit)));
+    const finalOffset = isNaN(offset) ? 0 : Math.max(0, Number(offset));
+    const finalUserId = Number(userId);
+    
+    if (isNaN(finalUserId)) {
+      throw new Error('Invalid user ID');
+    }
+    
+    const params = [finalUserId, finalLimit, finalOffset];
+    
+    console.log('[Notifications] Executing query with params:', params);
+    
+    const [notifications] = await pool.execute(query, params);
 
     // Get unread count
     const [unreadCount] = await pool.execute(
