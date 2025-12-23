@@ -64,7 +64,7 @@ const CourseDetailPage = () => {
   }, [outline?.units, unitProgress, isStudent]);
 
   const allUnlockedExpanded =
-    unlockedUnitIds.length > 0 && unlockedUnitIds.every((id) => expanded[id]);
+    unlockedUnitIds.length > 0 && unlockedUnitIds.every((id: number) => expanded[id]);
 
   useEffect(() => {
     try {
@@ -118,7 +118,7 @@ const CourseDetailPage = () => {
     const loadProgress = async () => {
       setProgressLoading(true);
       try {
-        const response = await apiService.getStudentCourseUnits(user.id, courseId);
+        const response = await apiService.getStudentCourseUnits(user?.id!, courseId);
         if (cancelled) return;
         const map = new Map<number, UnitProgress>();
         (response?.units || []).forEach((unit: any) => {

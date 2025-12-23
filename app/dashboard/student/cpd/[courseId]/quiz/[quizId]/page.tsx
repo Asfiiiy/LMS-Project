@@ -40,7 +40,7 @@ const StudentQuizPage = () => {
   
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
-  const [answers, setAnswers] = useState<{ [questionId: number]: number }>({});
+  const [answers, setAnswers] = useState<Record<number, string>>({});
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [showResults, setShowResults] = useState(false);
@@ -79,7 +79,7 @@ const StudentQuizPage = () => {
   const handleAnswerSelect = (questionId: number, optionId: number) => {
     setAnswers({
       ...answers,
-      [questionId]: optionId
+      [questionId]: String(optionId)
     });
   };
 
@@ -253,7 +253,7 @@ const StudentQuizPage = () => {
                         <label
                           key={option.id}
                           className={`flex items-center p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                            answers[question.id] === option.id
+                            answers[question.id] === String(option.id)
                               ? 'border-blue-500 bg-blue-50'
                               : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
                           }`}
@@ -262,7 +262,7 @@ const StudentQuizPage = () => {
                             type="radio"
                             name={`question-${question.id}`}
                             value={option.id}
-                            checked={answers[question.id] === option.id}
+                            checked={answers[question.id] === String(option.id)}
                             onChange={() => handleAnswerSelect(question.id, option.id)}
                             className="w-5 h-5 text-blue-600 mr-3"
                           />

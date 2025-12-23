@@ -100,7 +100,7 @@ function CheckoutForm({
 
       if (stripeError) {
         setError(stripeError.message || 'Payment failed');
-        showToast('error', stripeError.message || 'Payment failed');
+        showToast(stripeError.message || 'Payment failed', 'error');
         setProcessing(false);
         return;
       }
@@ -254,7 +254,7 @@ export default function ClaimCertificatePage() {
               'You have already claimed a certificate for this course. Redirecting to your certificates page...',
               'info',
               {
-                confirmText: 'View My Certificates',
+                confirmButtonText: 'View My Certificates',
                 onConfirm: () => {
                   router.push('/dashboard/student/certificates');
                 }
@@ -355,11 +355,11 @@ export default function ClaimCertificatePage() {
     if (file) {
       const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
       if (!validTypes.includes(file.type)) {
-        showToast('error', 'Please upload only JPG, JPEG, PNG, or PDF files');
+        showToast('Please upload only JPG, JPEG, PNG, or PDF files', 'error');
         return;
       }
       if (file.size > 5 * 1024 * 1024) {
-        showToast('error', 'File size must be less than 5MB');
+        showToast('File size must be less than 5MB', 'error');
         return;
       }
       setPhotoId(file);
@@ -371,37 +371,37 @@ export default function ClaimCertificatePage() {
 
     // Validation
     if (!fullName || !email || !phoneNumber || !dateOfBirth || !photoId || !postalAddress) {
-      showToast('error', 'Please fill in all required fields');
+      showToast('Please fill in all required fields', 'error');
       return;
     }
 
     if (!cpdCourseLevel) {
-      showToast('error', 'Please select a CPD course level');
+      showToast('Please select a CPD course level', 'error');
       return;
     }
 
     if (!certificateType) {
-      showToast('error', 'Please select certificate or level');
+      showToast('Please select certificate or level', 'error');
       return;
     }
 
     if (certificateType === 'certificate' && !selectedCertificate) {
-      showToast('error', 'Please select a certificate');
+      showToast('Please select a certificate', 'error');
       return;
     }
 
     if (certificateType === 'level' && !selectedCourseName) {
-      showToast('error', 'Please select a course');
+      showToast('Please select a course', 'error');
       return;
     }
 
     if (!deliveryOption) {
-      showToast('error', 'Please select a delivery option');
+      showToast('Please select a delivery option', 'error');
       return;
     }
 
     if ((deliveryOption === 'Hardcopy+PDF' || deliveryOption === 'Hardcopy') && !courierType) {
-      showToast('error', 'Please select a courier type');
+      showToast('Please select a courier type', 'error');
       return;
     }
 
@@ -438,7 +438,7 @@ export default function ClaimCertificatePage() {
       if (response.success && response.requiresPayment) {
         setClaimId(response.claimId);
         setShowPaymentForm(true);
-        showToast('success', 'Certificate claim submitted. Please complete payment.');
+        showToast('Certificate claim submitted. Please complete payment.', 'success');
       } else {
         showSweetAlert(
           'Success!',
@@ -459,7 +459,7 @@ export default function ClaimCertificatePage() {
           error.message || 'You have already claimed a certificate for this course.',
           'warning',
           {
-            confirmText: 'View My Certificates',
+            confirmButtonText: 'View My Certificates',
             onConfirm: () => {
               router.push('/dashboard/student/certificates');
             }

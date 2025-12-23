@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProtectedRoute from '@/app/components/ProtectedRoute';
 import { UserRole, User } from '@/app/components/types';
@@ -60,7 +60,7 @@ const REACTION_CONFIG = [
   { type: 'excellent', emoji: '🌟', label: 'Excellent' }
 ];
 
-const ForumPage = () => {
+const ForumPageContent = () => {
   const [userRole, setUserRole] = useState<UserRole>(null);
   const [user, setUser] = useState<User | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -1340,6 +1340,14 @@ const ForumPage = () => {
         )}
       </div>
     </ProtectedRoute>
+  );
+};
+
+const ForumPage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ForumPageContent />
+    </Suspense>
   );
 };
 

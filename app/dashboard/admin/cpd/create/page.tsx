@@ -16,7 +16,7 @@ interface SubCategory {
 }
 
 const CreateCPDCourse = () => {
-  const [userRole, setUserRole] = useState<'admin' | 'tutor' | 'student' | null>(null);
+  const [userRole, setUserRole] = useState<'Admin' | 'Tutor' | 'Student' | null>(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [categories, setCategories] = useState<Category[]>([]);
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
@@ -39,8 +39,8 @@ const CreateCPDCourse = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('lms-user') || 'null');
-    const role = user?.role?.toLowerCase() || null;
-    setUserRole(role as 'admin' | 'tutor' | 'student' | null);
+    const role = user?.role || null;
+    setUserRole(role as 'Admin' | 'Tutor' | 'Student' | null);
     setIsCheckingAuth(false);
     loadCategories();
   }, []);
@@ -147,7 +147,7 @@ const CreateCPDCourse = () => {
   }
 
   return (
-    <ProtectedRoute allowedRoles={['admin', 'tutor']} userRole={userRole}>
+    <ProtectedRoute allowedRoles={['Admin', 'Tutor']} userRole={userRole}>
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-7xl mx-auto px-4">
           {/* Header */}

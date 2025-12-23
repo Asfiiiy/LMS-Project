@@ -178,7 +178,7 @@ export default function CertificateClaimsManagement() {
       }
     } catch (error) {
       console.error('Error fetching pricing:', error);
-      showToast('error', 'Failed to fetch pricing');
+      showToast('Failed to fetch pricing', 'error');
     } finally {
       setLoading(false);
     }
@@ -225,7 +225,7 @@ export default function CertificateClaimsManagement() {
     window.open(fileUrl, '_blank');
   };
 
-  const handleDownloadDOCX = (claimId: number, type: 'certificate' | 'transcript') => {
+  const handleDownloadDOCX = async (claimId: number, type: 'certificate' | 'transcript') => {
     const cert = generatedCerts.get(claimId);
     if (!cert) {
       showToast('Certificate not generated yet', 'warning');
@@ -233,7 +233,7 @@ export default function CertificateClaimsManagement() {
     }
     
     const fileType = type === 'certificate' ? 'cert' : 'trans';
-    const downloadUrl = apiService.downloadCertificateDOCX(cert.id, fileType);
+    const downloadUrl = await apiService.downloadCertificateDOCX(cert.id, fileType);
     window.open(downloadUrl, '_blank');
   };
 
@@ -289,7 +289,7 @@ export default function CertificateClaimsManagement() {
       'warning',
       {
         showCancelButton: true,
-        confirmText: 'Yes, Reconvert',
+        confirmButtonText: 'Yes, Reconvert',
         onConfirm: async () => {
           try {
             const fileType = type === 'certificate' ? 'cert' : 'trans';
@@ -346,7 +346,7 @@ export default function CertificateClaimsManagement() {
       'warning',
       {
         showCancelButton: true,
-        confirmText: 'Yes, Deliver',
+        confirmButtonText: 'Yes, Deliver',
         onConfirm: async () => {
           try {
             setDeliveringCert(cert.id);
@@ -384,7 +384,7 @@ export default function CertificateClaimsManagement() {
       'warning',
       {
         showCancelButton: true,
-        confirmText: `Yes, Deliver All (${readyCerts.length})`,
+        confirmButtonText: `Yes, Deliver All (${readyCerts.length})`,
         onConfirm: async () => {
           try {
             setDeliveringCert(-1); // Indicate bulk delivery
@@ -434,7 +434,7 @@ export default function CertificateClaimsManagement() {
       const response = await apiService.updateCertificateClaimStatus(editingClaim.id, updateData);
       
       if (response.success) {
-        showToast('success', 'Claim updated successfully');
+        showToast('Claim updated successfully', 'success');
         setEditingClaim(null);
         fetchClaims();
       }
@@ -452,12 +452,12 @@ export default function CertificateClaimsManagement() {
       'This action cannot be undone. Are you sure?',
       'warning',
       {
-        showCancel: true,
-        confirmText: 'Yes, Delete',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Delete',
         onConfirm: async () => {
           try {
             await apiService.deleteCertificateClaim(claimId);
-            showToast('success', 'Claim deleted successfully');
+            showToast('Claim deleted successfully', 'success');
             fetchClaims();
           } catch (error: any) {
             console.error('Error deleting claim:', error);
@@ -482,7 +482,7 @@ export default function CertificateClaimsManagement() {
       if (profileResponse?.success) {
         setStudentProfile(profileResponse.profile);
       } else {
-        showToast('error', 'Failed to load student profile');
+        showToast('Failed to load student profile', 'error');
       }
 
       if (paymentsResponse?.success) {
@@ -490,7 +490,7 @@ export default function CertificateClaimsManagement() {
       }
     } catch (error) {
       console.error('Error fetching student data:', error);
-      showToast('error', 'Failed to load student data');
+      showToast('Failed to load student data', 'error');
     } finally {
       setLoadingProfile(false);
     }
@@ -517,7 +517,7 @@ export default function CertificateClaimsManagement() {
       const response = await apiService.updateCertificatePricing(editingPricing.id, updateData);
       
       if (response.success) {
-        showToast('success', 'Pricing updated successfully');
+        showToast('Pricing updated successfully', 'success');
         setEditingPricing(null);
         fetchPricing();
       }

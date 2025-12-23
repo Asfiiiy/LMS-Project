@@ -113,8 +113,8 @@ const GeneratedCertificatesManagement = () => {
       'warning',
       {
         showCancelButton: true,
-        confirmText: 'Yes, Deliver',
-        cancelText: 'Cancel',
+        confirmButtonText: 'Yes, Deliver',
+        cancelButtonText: 'Cancel',
         onConfirm: async () => {
           try {
             setLoadingAction(true);

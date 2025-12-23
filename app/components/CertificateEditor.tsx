@@ -102,7 +102,7 @@ export default function CertificateEditor({
       'warning',
       {
         showCancelButton: true,
-        confirmText: 'Yes, Save',
+        confirmButtonText: 'Yes, Save',
         onConfirm: async () => {
           try {
             setSaving(true);
@@ -133,10 +133,10 @@ export default function CertificateEditor({
                 showSweetAlert(
                   'Re-deliver Certificate?',
                   'The certificate has been updated. Would you like to re-deliver it to the student?',
-                  'question',
+                  'warning',
                   {
                     showCancelButton: true,
-                    confirmText: 'Yes, Re-deliver',
+                    confirmButtonText: 'Yes, Re-deliver',
                     onConfirm: async () => {
                       try {
                         const deliverResponse = await apiService.deliverCertificate(certificateId);
@@ -174,7 +174,7 @@ export default function CertificateEditor({
         'warning',
         {
           showCancelButton: true,
-          confirmText: 'Yes, Discard',
+          confirmButtonText: 'Yes, Discard',
           onConfirm: () => {
             onClose();
           }

@@ -2394,8 +2394,8 @@ const AdminDashboard = () => {
                                             log.role === 'admin' ? 'bg-purple-100 text-purple-800' :
                                             log.role === 'tutor' ? 'bg-blue-100 text-blue-800' :
                                             log.role === 'student' ? 'bg-green-100 text-green-800' :
-                                            log.role === 'manager' ? 'bg-yellow-100 text-yellow-800' :
-                                            log.role === 'moderator' ? 'bg-indigo-100 text-indigo-800' :
+                                            (log.role as any) === 'manager' ? 'bg-yellow-100 text-yellow-800' :
+                                            (log.role as any) === 'moderator' ? 'bg-indigo-100 text-indigo-800' :
                                             'bg-gray-100 text-gray-800'
                                           }`}>
                                             {log.role || (log.user_id ? 'Unknown' : 'System')}

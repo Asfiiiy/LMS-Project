@@ -291,7 +291,7 @@ export default function EditQualificationUnit() {
   }
 
   return (
-    <ProtectedRoute allowedRoles={['Admin', 'Tutor']} userRole={userRole}>
+    <ProtectedRoute allowedRoles={['Admin', 'Tutor']} userRole={userRole as any}>
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-6">
         <div className="max-w-7xl mx-auto">
           

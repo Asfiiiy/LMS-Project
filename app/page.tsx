@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { getApiUrl } from './utils/apiUrl';
 
 interface LoginResponse {
   success: boolean;
@@ -223,12 +224,9 @@ const LoginPage = () => {
     await playClickSound();
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 
-                     (typeof window !== 'undefined' 
-                       ? `${window.location.protocol}//${window.location.hostname}:5000/api`
-                       : 'http://localhost:5000/api');
+      const apiUrl = getApiUrl();
       
-      const res = await fetch(`${apiUrl}/login`, {
+      const res = await fetch(`${apiUrl}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

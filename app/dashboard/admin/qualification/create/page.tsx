@@ -17,7 +17,7 @@ interface SubCategory {
 }
 
 const CreateQualificationCourse = () => {
-  const [userRole, setUserRole] = useState<'admin' | 'tutor' | 'student' | null>(null);
+  const [userRole, setUserRole] = useState<'Admin' | 'Tutor' | 'Student' | null>(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [categories, setCategories] = useState<Category[]>([]);
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
@@ -45,8 +45,8 @@ const CreateQualificationCourse = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('lms-user') || 'null');
-    const role = user?.role?.toLowerCase() || null;
-    setUserRole(role as 'admin' | 'tutor' | 'student' | null);
+    const role = user?.role || null;
+    setUserRole(role as 'Admin' | 'Tutor' | 'Student' | null);
     setIsCheckingAuth(false);
     loadCategories();
   }, []);
@@ -201,7 +201,7 @@ const CreateQualificationCourse = () => {
   }
 
   return (
-    <ProtectedRoute allowedRoles={['admin', 'tutor']} userRole={userRole}>
+    <ProtectedRoute allowedRoles={['Admin', 'Tutor']} userRole={userRole}>
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-6">
         <div className="max-w-5xl mx-auto">
           {/* Header */}

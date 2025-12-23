@@ -44,6 +44,7 @@ interface Post {
 const ModeratorDashboard = () => {
   const router = useRouter();
   const [userRole, setUserRole] = useState<UserRole>(null);
+  const [statusFilter, setStatusFilter] = useState<string>('');
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);

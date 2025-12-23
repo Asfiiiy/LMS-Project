@@ -275,11 +275,11 @@ const EnrollmentSetupPage = () => {
           
           return {
             topicId: topic.id,
-            topicType: topic.type || 'cpd_topic',
+            topicType: (topic.type as "cpd_topic" | "qualification_unit") || 'cpd_topic',
             deadline: deadlineToSend,
             notes: topicNotes || undefined
           };
-        }).filter(item => item !== null) as Array<{ topicId: number; topicType: string; deadline: string | null; notes?: string }>;
+        }).filter(item => item !== null) as Array<{ topicId: number; topicType: "cpd_topic" | "qualification_unit"; deadline: string | null; notes?: string }>;
 
         if (deadlineArray.length > 0) {
           await apiService.setStudentDeadlines(courseId, studentId, deadlineArray);

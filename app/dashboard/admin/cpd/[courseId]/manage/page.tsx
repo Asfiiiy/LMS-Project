@@ -16,6 +16,7 @@ interface CPDTopic {
     id: number;
     title: string;
     time_limit: number;
+    passing_score?: number;
   };
   final_quiz?: {
     id: number;
@@ -29,7 +30,7 @@ const ManageCPDCourse = () => {
   const params = useParams();
   const courseId = parseInt(params.courseId as string);
   
-  const [userRole, setUserRole] = useState<'admin' | 'tutor' | 'student' | null>(null);
+  const [userRole, setUserRole] = useState<'Admin' | 'Tutor' | 'Student' | null>(null);
   const [course, setCourse] = useState<any>(null);
   const [topics, setTopics] = useState<CPDTopic[]>([]);
   const [expandedTopic, setExpandedTopic] = useState<number | null>(null);
@@ -53,8 +54,8 @@ const ManageCPDCourse = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('lms-user') || 'null');
-    const role = user?.role?.toLowerCase() || null;
-    setUserRole(role as 'admin' | 'tutor' | 'student' | null);
+    const role = user?.role || null;
+    setUserRole(role as 'Admin' | 'Tutor' | 'Student' | null);
     loadCourseData();
   }, [courseId]);
 
@@ -169,7 +170,7 @@ const ManageCPDCourse = () => {
 
   if (loading) {
     return (
-      <ProtectedRoute allowedRoles={['admin', 'tutor']} userRole={userRole}>
+      <ProtectedRoute allowedRoles={['Admin', 'Tutor']} userRole={userRole}>
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-lg">Loading course...</div>
         </div>
@@ -178,7 +179,7 @@ const ManageCPDCourse = () => {
   }
 
   return (
-    <ProtectedRoute allowedRoles={['admin', 'tutor']} userRole={userRole}>
+    <ProtectedRoute allowedRoles={['Admin', 'Tutor']} userRole={userRole}>
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-7xl mx-auto px-4">
           {/* Header */}
@@ -356,10 +357,10 @@ const ManageCPDCourse = () => {
                               <p className="text-xs text-gray-600 mb-3">Unlimited attempts, no unlock required</p>
                               {topic.practice_quiz ? (
                                 <div>
-                                  <p className="text-sm text-green-600 mb-2">✓ Quiz created (Pass: {topic.practice_quiz.passing_score}%)</p>
+                                  <p className="text-sm text-green-600 mb-2">✓ Quiz created (Pass: {topic.practice_quiz?.passing_score}%)</p>
                                   <div className="flex gap-2">
                                     <button 
-                                      onClick={() => handleDeleteQuiz(topic.practice_quiz.id, 'practice', topic.id)}
+                                      onClick={() => handleDeleteQuiz(topic.practice_quiz?.id!, 'practice', topic.id)}
                                       className="text-sm text-red-600 hover:text-red-800"
                                     >
                                       Delete
@@ -368,7 +369,7 @@ const ManageCPDCourse = () => {
                                     <button 
                                       onClick={async () => {
                                         if (confirm('Delete and recreate this quiz?')) {
-                                          await handleDeleteQuiz(topic.practice_quiz.id, 'practice', topic.id);
+                                          await handleDeleteQuiz(topic.practice_quiz?.id!, 'practice', topic.id);
                                           setShowQuizForm({topicId: topic.id, type: 'practice'});
                                         }
                                       }}
@@ -394,10 +395,10 @@ const ManageCPDCourse = () => {
                               <p className="text-xs text-gray-600 mb-3">Pass required to unlock next topic</p>
                               {topic.final_quiz ? (
                                 <div>
-                                  <p className="text-sm text-green-600 mb-2">✓ Quiz created (Pass: {topic.final_quiz.passing_score}%)</p>
+                                  <p className="text-sm text-green-600 mb-2">✓ Quiz created (Pass: {topic.final_quiz?.passing_score}%)</p>
                                   <div className="flex gap-2">
                                     <button 
-                                      onClick={() => handleDeleteQuiz(topic.final_quiz.id, 'final', topic.id)}
+                                      onClick={() => handleDeleteQuiz(topic.final_quiz?.id!, 'final', topic.id)}
                                       className="text-sm text-red-600 hover:text-red-800"
                                     >
                                       Delete
@@ -406,7 +407,7 @@ const ManageCPDCourse = () => {
                                     <button 
                                       onClick={async () => {
                                         if (confirm('Delete and recreate this quiz?')) {
-                                          await handleDeleteQuiz(topic.final_quiz.id, 'final', topic.id);
+                                          await handleDeleteQuiz(topic.final_quiz?.id!, 'final', topic.id);
                                           setShowQuizForm({topicId: topic.id, type: 'final'});
                                         }
                                       }}

@@ -11,8 +11,8 @@ class ApiService {
                      ? `${window.location.protocol}//${window.location.hostname}:5000/api`
                      : 'http://localhost:5000/api');
     
-    this.baseUrl = apiUrl;
-    this.baseUrlPublic = apiUrl;
+    this.baseUrl = apiUrl.endsWith("/api") ? apiUrl : `${apiUrl}/api`;
+    this.baseUrlPublic = apiUrl.endsWith("/api") ? apiUrl : `${apiUrl}/api`;
   }
 
   private getToken(): string | null {

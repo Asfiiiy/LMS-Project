@@ -3,6 +3,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { showSweetAlert } from '../components/SweetAlert';
+import { getApiUrl } from '../utils/apiUrl';
 
 const INACTIVITY_TIMEOUT = 20 * 60 * 1000; // 20 minutes in milliseconds
 const WARNING_TIME = 60 * 1000; // 60 seconds before logout
@@ -22,7 +23,7 @@ export const useAutoLogout = () => {
       // Call backend logout endpoint to log the event
       const token = localStorage.getItem('lms-token');
       if (token) {
-        await fetch('http://localhost:5000/api/login/logout', {
+        await fetch(`${getApiUrl()}/api/login/logout`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -93,7 +94,7 @@ export const useAutoLogout = () => {
       const token = localStorage.getItem('lms-token');
       if (!token) return;
 
-      const response = await fetch('http://localhost:5000/api/login/refresh', {
+      const response = await fetch(`${getApiUrl()}/api/login/refresh`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

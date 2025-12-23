@@ -1612,7 +1612,7 @@ const TutorDashboard = () => {
                     value={gradeForm.feedback}
                     onEditorChange={(content) => setGradeForm({ ...gradeForm, feedback: content })}
                     init={{
-                      license_key: 'gpl',
+                      license_key: 'gpl' as any,
                       height: 400,
                       menubar: false,
                       plugins: [
