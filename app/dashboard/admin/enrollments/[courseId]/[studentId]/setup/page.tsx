@@ -120,35 +120,14 @@ const EnrollmentSetupPage = () => {
           console.error('Error fetching tutor student:', error);
         }
       } else {
-        // For admin, try enrollment endpoint first, then users endpoint
+        // For admin, use users endpoint
         try {
-          // Try to get from enrollment data
-          const enrollmentResponse = await apiService.getStudentEnrollment(courseId, studentId);
-          if (enrollmentResponse?.success && enrollmentResponse?.student) {
-            student = enrollmentResponse.student;
-          } else if (enrollmentResponse?.enrollment) {
-            // If enrollment exists but no student object, extract from enrollment
-            const enrollment = enrollmentResponse.enrollment;
-            student = {
-              id: enrollment.student_id || enrollment.user_id || studentId,
-              name: enrollment.student_name || enrollment.name,
-              email: enrollment.student_email || enrollment.email
-            };
+          const usersResponse = await apiService.getUsers(1, 1000);
+          if (usersResponse?.users) {
+            student = usersResponse.users.find((u: any) => u.id === studentId);
           }
-        } catch (enrollmentError) {
-          console.error('Error fetching enrollment:', enrollmentError);
-        }
-        
-        // If still not found, try users endpoint
-        if (!student) {
-          try {
-            const usersResponse = await apiService.getUsers(1, 1000);
-            if (usersResponse?.users) {
-              student = usersResponse.users.find((u: any) => u.id === studentId);
-            }
-          } catch (error) {
-            console.error('Error fetching admin users:', error);
-          }
+        } catch (error) {
+          console.error('Error fetching admin users:', error);
         }
       }
       
