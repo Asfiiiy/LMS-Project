@@ -59,7 +59,9 @@ function ChatPageContent() {
   const fetchConversations = async (userId: number) => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/chat/conversations/${userId}`);
+      const { getApiUrl } = await import('../utils/apiUrl');
+      const apiUrl = getApiUrl();
+      const res = await fetch(`${apiUrl}/api/chat/conversations/${userId}`);
       const data = await res.json();
       if (data.success) {
         setConversations(data.conversations || []);
@@ -88,7 +90,9 @@ function ChatPageContent() {
 
   const fetchAllUsers = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/chat/users/all');
+      const { getApiUrl } = await import('../utils/apiUrl');
+      const apiUrl = getApiUrl();
+      const res = await fetch(`${apiUrl}/api/chat/users/all`);
       const data = await res.json();
       if (data.success) {
         // Filter out current user

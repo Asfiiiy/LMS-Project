@@ -44,7 +44,15 @@ export default function ChatBox({ conversationId, userId, userName, otherUserId,
   // Initialize socket connection
   useEffect(() => {
     if (!socket) {
-      socket = io("http://localhost:5000", {
+      const getApiUrl = () => {
+        if (typeof window !== 'undefined') {
+          return process.env.NEXT_PUBLIC_API_URL || 
+                 `${window.location.protocol}//${window.location.hostname}:5000`;
+        }
+        return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      };
+      const apiUrl = getApiUrl();
+      socket = io(apiUrl, {
         transports: ['websocket', 'polling']
       });
     }
@@ -142,7 +150,9 @@ export default function ChatBox({ conversationId, userId, userName, otherUserId,
   const fetchMessages = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/chat/${conversationId}`);
+      const { getApiUrl } = await import('../utils/apiUrl');
+      const apiUrl = getApiUrl();
+      const res = await fetch(`${apiUrl}/api/chat/${conversationId}`);
       const data = await res.json();
       if (data.success) {
         setMessages(data.messages || []);
@@ -162,7 +172,9 @@ export default function ChatBox({ conversationId, userId, userName, otherUserId,
 
   const markMessageAsRead = async (messageId: number) => {
     try {
-      await fetch("http://localhost:5000/api/chat/mark-read", {
+      const { getApiUrl } = await import('../utils/apiUrl');
+      const apiUrl = getApiUrl();
+      await fetch(`${apiUrl}/api/chat/mark-read`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messageId, userId }),
@@ -207,7 +219,9 @@ export default function ChatBox({ conversationId, userId, userName, otherUserId,
     };
 
     try {
-      const res = await fetch("http://localhost:5000/api/chat/message", {
+      const { getApiUrl } = await import('../utils/apiUrl');
+      const apiUrl = getApiUrl();
+      const res = await fetch(`${apiUrl}/api/chat/message`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -245,7 +259,9 @@ export default function ChatBox({ conversationId, userId, userName, otherUserId,
       formData.append("file", file);
 
       // Upload to Cloudinary via backend
-      const uploadRes = await fetch("http://localhost:5000/api/chat/upload", {
+      const { getApiUrl } = await import('../utils/apiUrl');
+      const apiUrl = getApiUrl();
+      const uploadRes = await fetch(`${apiUrl}/api/chat/upload`, {
         method: "POST",
         body: formData,
       });
@@ -257,7 +273,7 @@ export default function ChatBox({ conversationId, userId, userName, otherUserId,
       }
 
       // Send message with file
-      const res = await fetch("http://localhost:5000/api/chat/message", {
+      const res = await fetch(`${apiUrl}/api/chat/message`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -67,7 +67,7 @@ router.get('/', auth, async (req, res) => {
 
     const [notifications] = await pool.execute(
       query,
-      [userId, limit, offset]
+      [userId, parseInt(limit, 10), parseInt(offset, 10)]
     );
 
     // Get unread count
