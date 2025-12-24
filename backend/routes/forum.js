@@ -213,7 +213,11 @@ router.get('/posts', optionalAuth, cacheMiddleware(60, (req) => {
 }), async (req, res) => {
   try {
     const { category_id, status, search, sort = 'recent', page = 1, limit = 20 } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    
+    // Ensure limit and offset are always valid integers
+    const finalLimit = Math.max(1, Math.min(1000, parseInt(limit, 10) || 20));
+    const finalPage = Math.max(1, parseInt(page, 10) || 1);
+    const finalOffset = Math.max(0, (finalPage - 1) * finalLimit);
 
     // Build query - handle both new schema (category_id) and old schema (forum_id)
     // First check if category_id column exists
@@ -347,10 +351,11 @@ router.get('/posts', optionalAuth, cacheMiddleware(60, (req) => {
         }
     }
 
-    query += ' LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    // MySQL LIMIT/OFFSET can be problematic with prepared statements
+    // Use template literals for LIMIT/OFFSET to avoid parameter binding issues
+    const queryWithLimit = query.replace('LIMIT ? OFFSET ?', `LIMIT ${finalLimit} OFFSET ${finalOffset}`);
 
-    const [posts] = await pool.execute(query, params);
+    const [posts] = await pool.execute(queryWithLimit, params);
 
     // Get total count for pagination
     let countQuery = `
@@ -500,10 +505,10 @@ router.get('/posts', optionalAuth, cacheMiddleware(60, (req) => {
       success: true,
       posts: postsWithReactions,
       pagination: {
-        page: parseInt(page),
-        limit: parseInt(limit),
+        page: finalPage,
+        limit: finalLimit,
         total: total,
-        pages: Math.ceil(total / parseInt(limit))
+        pages: Math.ceil(total / finalLimit)
       }
     });
   } catch (error) {

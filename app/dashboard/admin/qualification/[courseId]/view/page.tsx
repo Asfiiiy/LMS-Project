@@ -5,8 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { apiService } from '@/app/services/api';
 import ProtectedRoute from '@/app/components/ProtectedRoute';
 import { showSweetAlert } from '@/app/components/SweetAlert';
-
-const API_BASE_URL = 'http://localhost:5000/api';
+import { getApiUrl } from '@/app/utils/apiUrl';
 
 // Color scheme matching your dashboard
 const COLORS = {
@@ -116,10 +115,11 @@ export default function ViewQualificationCourse() {
         if (user?.role === 'Student') {
           // Add cache-busting timestamp to ensure fresh data after submission
           const cacheBuster = `&_t=${Date.now()}`;
+          const apiUrl = getApiUrl();
           const unitsWithProgress = await Promise.all(
             sortedUnits.map(async (unit: any) => {
               try {
-                const progressResponse = await fetch(`${API_BASE_URL}/qualification/units/${unit.id}?studentId=${user.id}${cacheBuster}`, {
+                const progressResponse = await fetch(`${apiUrl}/api/qualification/units/${unit.id}?studentId=${user.id}${cacheBuster}`, {
                   headers: {
                     'Authorization': `Bearer ${localStorage.getItem('lms-token')}`,
                     'Content-Type': 'application/json',
@@ -203,8 +203,8 @@ export default function ViewQualificationCourse() {
     try {
       const token = localStorage.getItem('lms-token');
       console.log('[Qualification View] Loading submissions for unit:', unitId, 'student:', studentId);
-      
-      const response = await fetch(`${API_BASE_URL}/qualification/units/${unitId}/submissions?studentId=${studentId}`, {
+      const apiUrl = getApiUrl();
+      const response = await fetch(`${apiUrl}/api/qualification/units/${unitId}/submissions?studentId=${studentId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -255,7 +255,8 @@ export default function ViewQualificationCourse() {
       setPdfLoading(true);
       setPdfError(false);
       // Use proxy to force inline display instead of download
-      const proxyUrl = `${API_BASE_URL}/admin/proxy-pdf?url=${encodeURIComponent(filePath)}`;
+      const apiUrl = getApiUrl();
+      const proxyUrl = `${apiUrl}/api/admin/proxy-pdf?url=${encodeURIComponent(filePath)}`;
       setPdfSrc(proxyUrl);
     } else {
       // For other files, open in new tab
@@ -281,8 +282,8 @@ export default function ViewQualificationCourse() {
       if (isResubmission) {
         formData.append('is_resubmission', 'true');
       }
-      
-      const response = await fetch(`${API_BASE_URL}/qualification/units/${selectedUnitId}/submit`, {
+      const apiUrl = getApiUrl();
+      const response = await fetch(`${apiUrl}/api/qualification/units/${selectedUnitId}/submit`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('lms-token')}`
@@ -331,8 +332,8 @@ export default function ViewQualificationCourse() {
       if (isResubmission) {
         formData.append('is_resubmission', 'true');
       }
-      
-      const response = await fetch(`${API_BASE_URL}/qualification/units/${selectedUnitId}/submit`, {
+      const apiUrl = getApiUrl();
+      const response = await fetch(`${apiUrl}/api/qualification/units/${selectedUnitId}/submit`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('lms-token')}`
@@ -1655,7 +1656,8 @@ export default function ViewQualificationCourse() {
                             answer: String(ans)
                           }));
 
-                          const response = await fetch(`${API_BASE_URL}/qualification/units/${selectedUnitId}/quiz/attempt`, {
+                          const apiUrl = getApiUrl();
+                          const response = await fetch(`${apiUrl}/api/qualification/units/${selectedUnitId}/quiz/attempt`, {
                             method: 'POST',
                             headers: {
                               'Authorization': `Bearer ${localStorage.getItem('lms-token')}`,

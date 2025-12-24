@@ -61,7 +61,9 @@ const StudentQuizPage = () => {
   const loadQuiz = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:5000/api/cpd/quizzes/${quizId}`);
+      const { getApiUrl } = await import('@/app/utils/apiUrl');
+      const apiUrl = getApiUrl();
+      const response = await fetch(`${apiUrl}/api/cpd/quizzes/${quizId}`);
       const data = await response.json();
       
       if (data.success) {

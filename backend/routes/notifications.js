@@ -76,11 +76,16 @@ router.get('/', auth, async (req, res) => {
       throw new Error('Invalid user ID');
     }
     
-    const params = [finalUserId, finalLimit, finalOffset];
+    // MySQL LIMIT/OFFSET can be problematic with prepared statements
+    // Use template literals for LIMIT/OFFSET to avoid parameter binding issues
+    const queryWithLimit = query.replace('LIMIT ? OFFSET ?', `LIMIT ${finalLimit} OFFSET ${finalOffset}`);
+    const params = [finalUserId];
     
-    console.log('[Notifications] Executing query with params:', params);
+    console.log('[Notifications] Query:', queryWithLimit);
+    console.log('[Notifications] Params:', params);
+    console.log('[Notifications] Limit:', finalLimit, 'Offset:', finalOffset);
     
-    const [notifications] = await pool.execute(query, params);
+    const [notifications] = await pool.execute(queryWithLimit, params);
 
     // Get unread count
     const [unreadCount] = await pool.execute(

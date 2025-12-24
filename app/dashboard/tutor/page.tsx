@@ -11,6 +11,7 @@ import { User, UserRole } from '@/app/components/types';
 import { apiService } from '@/app/services/api';
 import { showSweetAlert } from '@/app/components/SweetAlert';
 import { Editor } from '@tinymce/tinymce-react';
+import { getApiUrl } from '@/app/utils/apiUrl';
 
 interface TutorAssignmentRow {
   assignment_id: number;
@@ -185,7 +186,7 @@ const TutorDashboard = () => {
           apiService.getTutorAssignmentSubmissions(tutorId),
           apiService.getTutorQuizAttempts(tutorId),
           apiService.getCPDQuizAttemptsForTutor(tutorId),
-          fetch('http://localhost:5000/api/qualification/submissions/all', {
+          fetch(`${getApiUrl()}/api/qualification/submissions/all`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('lms-token')}`,
               'Content-Type': 'application/json'
@@ -317,7 +318,8 @@ const TutorDashboard = () => {
     
     setQualRefreshing(true);
     try {
-      const qualSubmissionsRes = await fetch('http://localhost:5000/api/qualification/submissions/all', {
+      const apiUrl = getApiUrl();
+      const qualSubmissionsRes = await fetch(`${apiUrl}/api/qualification/submissions/all`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('lms-token')}`,
           'Content-Type': 'application/json'
@@ -934,7 +936,7 @@ const TutorDashboard = () => {
                                         {submission.pass_fail_result === 'pass' ? '✅ Pass' : submission.pass_fail_result === 'refer' ? '⚠️ Refer' : '⏳ Pending'}
                                       </span>
                                       <button 
-                                        onClick={() => window.open(`http://localhost:5000/api/admin/proxy-pdf?url=${encodeURIComponent(submission.file_path)}`, '_blank')}
+                                        onClick={() => window.open(`${getApiUrl()}/api/admin/proxy-pdf?url=${encodeURIComponent(submission.file_path)}`, '_blank')}
                                         className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700"
                                       >
                                         View File
@@ -946,7 +948,7 @@ const TutorDashboard = () => {
                                         ⏳ Awaiting Grade
                                       </span>
                                       <button 
-                                        onClick={() => window.open(`http://localhost:5000/api/admin/proxy-pdf?url=${encodeURIComponent(submission.file_path)}`, '_blank')}
+                                        onClick={() => window.open(`${getApiUrl()}/api/admin/proxy-pdf?url=${encodeURIComponent(submission.file_path)}`, '_blank')}
                                         className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700"
                                       >
                                         View File
@@ -1545,7 +1547,7 @@ const TutorDashboard = () => {
                   <div className="flex justify-between">
                     <span className="text-gray-600">File:</span>
                     <button
-                      onClick={() => window.open(`http://localhost:5000/api/admin/proxy-pdf?url=${encodeURIComponent(selectedSubmission.file_path)}`, '_blank')}
+                      onClick={() => window.open(`${getApiUrl()}/api/admin/proxy-pdf?url=${encodeURIComponent(selectedSubmission.file_path)}`, '_blank')}
                       className="text-blue-600 hover:underline font-medium"
                     >
                       {selectedSubmission.file_name}
@@ -1692,7 +1694,8 @@ const TutorDashboard = () => {
               <button
                 onClick={async () => {
                   try {
-                    const response = await fetch(`http://localhost:5000/api/qualification/submissions/${selectedSubmission.submission_id}/grade`, {
+                    const apiUrl = getApiUrl();
+                    const response = await fetch(`${apiUrl}/api/qualification/submissions/${selectedSubmission.submission_id}/grade`, {
                       method: 'POST',
                       headers: {
                         'Authorization': `Bearer ${localStorage.getItem('lms-token')}`,
@@ -1716,7 +1719,8 @@ const TutorDashboard = () => {
                       
                       // Reload submissions
                       if (user?.id) {
-                        const qualSubmissionsRes = await fetch('http://localhost:5000/api/qualification/submissions/all', {
+                        const apiUrl = getApiUrl();
+                        const qualSubmissionsRes = await fetch(`${apiUrl}/api/qualification/submissions/all`, {
                           headers: {
                             'Authorization': `Bearer ${localStorage.getItem('lms-token')}`,
                             'Content-Type': 'application/json'
