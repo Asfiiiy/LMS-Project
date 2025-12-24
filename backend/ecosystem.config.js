@@ -82,6 +82,34 @@ module.exports = {
       watch: false,
       kill_timeout: 5000,
       listen_timeout: 10000
+    },
+    {
+      name: 'lms-frontend',
+      script: 'npm',
+      args: 'start',
+      cwd: '../',                 // Navigate to lms-app root (parent of backend/)
+      instances: 1,               // Single instance (Next.js handles clustering internally)
+      exec_mode: 'fork',          // Fork mode for Next.js
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3000,
+        NODE_OPTIONS: '--max-old-space-size=4096' // 4GB for Next.js (handles SSR and large builds)
+      },
+      error_file: './logs/frontend-error.log',
+      out_file: './logs/frontend-out.log',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+      merge_logs: true,
+      autorestart: true,
+      max_memory_restart: 5120,    // 5GB in MB - Next.js needs more memory for SSR
+      min_uptime: '30s',          // Give Next.js more time to start
+      max_restarts: 5,            // Fewer restarts to prevent restart loops
+      restart_delay: 10000,       // 10 second delay between restarts
+      watch: false,
+      kill_timeout: 15000,        // 15 seconds for graceful shutdown
+      listen_timeout: 30000,      // 30 seconds for Next.js to start listening
+      shutdown_with_message: true,
+      // Health check
+      wait_ready: true
     }
   ]
 };
