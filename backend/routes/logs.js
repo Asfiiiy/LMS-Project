@@ -40,9 +40,10 @@ router.get('/', auth, permit('Admin'), async (req, res) => {
       format = 'json'
     } = req.query;
 
-    page = parseInt(page, 10) || 1;
-    limit = Math.min(parseInt(limit, 10) || 50, 500); // max 500 per page (increased from 200)
-    const offset = (page - 1) * limit;
+    // Ensure limit and offset are always valid integers
+    const finalLimit = Math.max(1, Math.min(500, parseInt(limit, 10) || 50));
+    const finalPage = Math.max(1, parseInt(page, 10) || 1);
+    const finalOffset = Math.max(0, (finalPage - 1) * finalLimit);
 
     const whereClauses = [];
     const params = [];
@@ -124,8 +125,7 @@ router.get('/', auth, permit('Admin'), async (req, res) => {
     // Fetch rows with user names and new columns
     // Use COALESCE to provide defaults for old logs with NULL service/role
     // Map role_id to role name for users without role in log
-    const [rows] = await pool.execute(
-      `SELECT 
+    let query = `SELECT 
         sl.id,
         sl.user_id,
         u.name as user_name,
@@ -156,9 +156,13 @@ router.get('/', auth, permit('Admin'), async (req, res) => {
        LEFT JOIN users u ON sl.user_id = u.id
        ${whereSQL}
        ORDER BY sl.created_at DESC
-       LIMIT ? OFFSET ?`,
-      [...params, limit, offset]
-    );
+       LIMIT ? OFFSET ?`;
+    
+    // MySQL LIMIT/OFFSET can be problematic with prepared statements
+    // Use template literals for LIMIT/OFFSET to avoid parameter binding issues
+    const queryWithLimit = query.replace('LIMIT ? OFFSET ?', `LIMIT ${finalLimit} OFFSET ${finalOffset}`);
+    
+    const [rows] = await pool.execute(queryWithLimit, params);
 
     // CSV export
     if (format === 'csv') {
@@ -343,10 +347,10 @@ router.get('/', auth, permit('Admin'), async (req, res) => {
       success: true,
       data: rows,
       pagination: {
-        page,
-        limit,
+        page: finalPage,
+        limit: finalLimit,
         total,
-        totalPages: Math.ceil(total / limit)
+        totalPages: Math.ceil(total / finalLimit)
       }
     });
   } catch (error) {
@@ -441,16 +445,21 @@ router.get('/exports', auth, permit('Admin'), async (req, res) => {
   try {
     const admin_id = req.user.id;
     const { page = 1, limit = 50 } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    
+    // Ensure limit and offset are always valid integers
+    const finalLimit = Math.max(1, Math.min(500, parseInt(limit, 10) || 50));
+    const finalPage = Math.max(1, parseInt(page, 10) || 1);
+    const finalOffset = Math.max(0, (finalPage - 1) * finalLimit);
 
-    const [exports] = await pool.execute(
-      `SELECT id, exported_rows, filter_used, exported_at 
+    // MySQL LIMIT/OFFSET can be problematic with prepared statements
+    // Use template literals for LIMIT/OFFSET to avoid parameter binding issues
+    const query = `SELECT id, exported_rows, filter_used, exported_at 
        FROM log_exports 
        WHERE admin_id = ? 
        ORDER BY exported_at DESC 
-       LIMIT ? OFFSET ?`,
-      [admin_id, parseInt(limit), offset]
-    );
+       LIMIT ${finalLimit} OFFSET ${finalOffset}`;
+    
+    const [exports] = await pool.execute(query, [admin_id]);
 
     // Parse JSON filter_used
     const parsedExports = exports.map(e => ({
@@ -468,10 +477,10 @@ router.get('/exports', auth, permit('Admin'), async (req, res) => {
       success: true,
       exports: parsedExports,
       pagination: {
-        page: parseInt(page),
-        limit: parseInt(limit),
+        page: finalPage,
+        limit: finalLimit,
         total,
-        totalPages: Math.ceil(total / parseInt(limit))
+        totalPages: Math.ceil(total / finalLimit)
       }
     });
   } catch (err) {

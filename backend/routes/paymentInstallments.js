@@ -418,9 +418,11 @@ router.get('/admin/payments', auth, cacheMiddleware(60), async (req, res) => {
     }
     
     const { status, search, page = 1, limit = 25 } = req.query;
-    const pageNum = parseInt(page) || 1;
-    const limitNum = parseInt(limit) || 25;
-    const offset = (pageNum - 1) * limitNum;
+    
+    // Ensure limit and offset are always valid integers
+    const finalLimit = Math.max(1, Math.min(1000, parseInt(limit, 10) || 25));
+    const finalPage = Math.max(1, parseInt(page, 10) || 1);
+    const finalOffset = Math.max(0, (finalPage - 1) * finalLimit);
     
     let baseQuery = `
       FROM student_payment_installments spi
@@ -457,17 +459,20 @@ router.get('/admin/payments', auth, cacheMiddleware(60), async (req, res) => {
       LIMIT ? OFFSET ?
     `;
     
-    params.push(limitNum, offset);
-    const [rows] = await pool.execute(dataQuery, params);
+    // MySQL LIMIT/OFFSET can be problematic with prepared statements
+    // Use template literals for LIMIT/OFFSET to avoid parameter binding issues
+    const queryWithLimit = dataQuery.replace('LIMIT ? OFFSET ?', `LIMIT ${finalLimit} OFFSET ${finalOffset}`);
+    
+    const [rows] = await pool.execute(queryWithLimit, params);
     
     res.json({
       success: true,
       installments: rows,
       pagination: {
-        page: pageNum,
-        limit: limitNum,
+        page: finalPage,
+        limit: finalLimit,
         total: total,
-        totalPages: Math.ceil(total / limitNum)
+        totalPages: Math.ceil(total / finalLimit)
       }
     });
   } catch (error) {

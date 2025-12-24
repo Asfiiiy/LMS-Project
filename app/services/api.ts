@@ -1112,7 +1112,11 @@ class ApiService {
   // Get health check status
   async getHealthStatus() {
     // Health endpoint is at /health (not /api/health)
-    const response = await fetch('http://localhost:5000/health', {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 
+                   (typeof window !== 'undefined' 
+                     ? `${window.location.protocol}//${window.location.hostname}:5000`
+                     : 'http://localhost:5000');
+    const response = await fetch(`${apiUrl}/health`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

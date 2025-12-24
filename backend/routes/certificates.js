@@ -129,9 +129,10 @@ router.get('/claims', auth, async (req, res) => {
   try {
     const { payment_status, delivery_status, course_type, search, page = 1, limit = 10 } = req.query;
     
-    const pageNum = parseInt(page) || 1;
-    const limitNum = parseInt(limit) || 10;
-    const offset = (pageNum - 1) * limitNum;
+    // Ensure limit and offset are always valid integers
+    const finalLimit = Math.max(1, Math.min(1000, parseInt(limit, 10) || 10));
+    const finalPage = Math.max(1, parseInt(page, 10) || 1);
+    const finalOffset = Math.max(0, (finalPage - 1) * finalLimit);
     
     let query = `
       SELECT 
@@ -187,17 +188,21 @@ router.get('/claims', auth, async (req, res) => {
     const [countResult] = await pool.execute(countQuery, params);
     const total = countResult[0]?.total || 0;
     
+    // MySQL LIMIT/OFFSET can be problematic with prepared statements
+    // Use template literals for LIMIT/OFFSET to avoid parameter binding issues
+    const queryWithLimit = query.replace('LIMIT ? OFFSET ?', `LIMIT ${finalLimit} OFFSET ${finalOffset}`);
+    
     // Get paginated claims
-    const [claims] = await pool.execute(query, [...params, limitNum, offset]);
+    const [claims] = await pool.execute(queryWithLimit, params);
     
     res.json({ 
       success: true, 
       claims,
       pagination: {
-        page: pageNum,
-        limit: limitNum,
+        page: finalPage,
+        limit: finalLimit,
         total,
-        totalPages: Math.ceil(total / limitNum)
+        totalPages: Math.ceil(total / finalLimit)
       }
     });
   } catch (error) {
