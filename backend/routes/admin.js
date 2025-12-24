@@ -140,7 +140,13 @@ router.get('/users', auth, permit('Admin'), pagination, cacheMiddleware(30), asy
     const total = countResult[0].total;
     
     // Get paginated results with manager name
-    const [rows] = await pool.execute(`
+    // Ensure limit and offset are always valid integers
+    const finalLimit = Math.max(1, Math.min(1000, parseInt(limit, 10) || 50));
+    const finalOffset = Math.max(0, parseInt(offset, 10) || 0);
+    
+    // MySQL LIMIT/OFFSET can be problematic with prepared statements
+    // Use template literals for LIMIT/OFFSET to avoid parameter binding issues
+    const query = `
       SELECT 
         u.id, u.name, u.email, u.role_id, u.manager_id, u.created_at, u.updated_at, 
         r.name as role_name,
@@ -149,19 +155,21 @@ router.get('/users', auth, permit('Admin'), pagination, cacheMiddleware(30), asy
       LEFT JOIN roles r ON u.role_id = r.id 
       LEFT JOIN users m ON u.manager_id = m.id
       ORDER BY u.created_at DESC 
-      LIMIT ? OFFSET ?
-    `, [parseInt(limit), parseInt(offset)]);
+      LIMIT ${finalLimit} OFFSET ${finalOffset}
+    `;
+    
+    const [rows] = await pool.execute(query);
     
     res.json({
       success: true,
       users: rows,
       pagination: {
-        page,
-        limit,
+        page: parseInt(page),
+        limit: finalLimit,
         total,
-        totalPages: Math.ceil(total / limit),
-        hasNext: page < Math.ceil(total / limit),
-        hasPrev: page > 1
+        totalPages: Math.ceil(total / finalLimit),
+        hasNext: parseInt(page) < Math.ceil(total / finalLimit),
+        hasPrev: parseInt(page) > 1
       }
     });
   } catch (err) {
