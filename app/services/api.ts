@@ -5,11 +5,28 @@ class ApiService {
 
   constructor() {
     // Use environment variable or detect from window location
-    // For mobile/network access, use your computer's local IP (e.g., http://192.168.1.100:5000)
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 
-                   (typeof window !== 'undefined' 
-                     ? `${window.location.protocol}//${window.location.hostname}:5000/api`
-                     : 'http://localhost:5000/api');
+    // For HTTPS sites, use same domain (Nginx will proxy /api to backend)
+    // For HTTP (development), use port 5000
+    let apiUrl: string;
+    
+    if (process.env.NEXT_PUBLIC_API_URL) {
+      apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    } else if (typeof window !== 'undefined') {
+      const protocol = window.location.protocol;
+      const hostname = window.location.hostname;
+      const port = window.location.port;
+      
+      // If on HTTPS (production), use same domain (Nginx proxies /api to backend)
+      if (protocol === 'https:') {
+        apiUrl = `${protocol}//${hostname}${port ? `:${port}` : ''}`;
+      } else {
+        // For HTTP (development), use port 5000
+        apiUrl = `${protocol}//${hostname}:5000`;
+      }
+    } else {
+      // Server-side fallback
+      apiUrl = 'http://localhost:5000';
+    }
     
     this.baseUrl = apiUrl.endsWith("/api") ? apiUrl : `${apiUrl}/api`;
     this.baseUrlPublic = apiUrl.endsWith("/api") ? apiUrl : `${apiUrl}/api`;
