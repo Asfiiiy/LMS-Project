@@ -53,13 +53,34 @@ const cacheMiddleware = (duration = 300, keyGenerator = null) => {
  */
 const invalidateCache = async (pattern) => {
   try {
-    const keys = await redis.keys(pattern);
+    // Use SCAN instead of KEYS to reduce Redis load (KEYS is blocking and expensive)
+    const stream = redis.scanStream({
+      match: pattern,
+      count: 100
+    });
+    
+    const keys = [];
+    stream.on('data', (resultKeys) => {
+      keys.push(...resultKeys);
+    });
+    
+    await new Promise((resolve, reject) => {
+      stream.on('end', resolve);
+      stream.on('error', reject);
+    });
+    
     if (keys.length > 0) {
-      await redis.del(...keys);
+      // Delete in batches to avoid overwhelming Redis
+      const batchSize = 100;
+      for (let i = 0; i < keys.length; i += batchSize) {
+        const batch = keys.slice(i, i + batchSize);
+        await redis.del(...batch);
+      }
       console.log(`🗑️  Invalidated ${keys.length} cache keys: ${pattern}`);
     }
   } catch (err) {
     console.error('Cache invalidation error:', err);
+    // Continue without cache if Redis fails
   }
 };
 
@@ -68,9 +89,29 @@ const invalidateCache = async (pattern) => {
  */
 const clearAllCache = async () => {
   try {
-    const keys = await redis.keys('cache:*');
+    // Use SCAN instead of KEYS to reduce Redis load
+    const stream = redis.scanStream({
+      match: 'cache:*',
+      count: 100
+    });
+    
+    const keys = [];
+    stream.on('data', (resultKeys) => {
+      keys.push(...resultKeys);
+    });
+    
+    await new Promise((resolve, reject) => {
+      stream.on('end', resolve);
+      stream.on('error', reject);
+    });
+    
     if (keys.length > 0) {
-      await redis.del(...keys);
+      // Delete in batches
+      const batchSize = 100;
+      for (let i = 0; i < keys.length; i += batchSize) {
+        const batch = keys.slice(i, i + batchSize);
+        await redis.del(...batch);
+      }
       console.log(`🗑️  Cleared ${keys.length} cache entries`);
     }
   } catch (err) {

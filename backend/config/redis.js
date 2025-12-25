@@ -17,13 +17,9 @@ redis.on("error", (err) => {
   console.error("❌ Redis Error:", err);
 });
 
-redis.on("ready", async () => {
-  try {
-    const pong = await redis.ping();
-    console.log("✅ Redis ping successful:", pong);
-  } catch (err) {
-    console.error("❌ Redis ping failed", err);
-  }
+redis.on("ready", () => {
+  // Removed ping to reduce Redis usage - connection is ready
+  console.log("✅ Redis ready (connection established)");
 });
 
 module.exports = redis;

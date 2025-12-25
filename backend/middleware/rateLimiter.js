@@ -4,18 +4,53 @@ const redis = require('../config/redis');
 const { RedisStore } = require('rate-limit-redis');
 const metrics = require('../utils/metrics');
 
-// Redis store for general API rate limiting
-// For ioredis, we need to provide sendCommand function
-const apiRedisStore = new RedisStore({
-  sendCommand: (...args) => redis.call(...args),
-  prefix: 'ratelimit:api:'
-});
+// Helper to check if Redis is available
+let redisAvailable = true;
 
-// Redis store for authentication rate limiting (separate instance with unique prefix)
-const authRedisStore = new RedisStore({
-  sendCommand: (...args) => redis.call(...args),
-  prefix: 'ratelimit:auth:'
-});
+// Check Redis connection status without ping (reduces Redis usage)
+// Only disable if Redis is clearly not connected
+// For production with 1k+ active users, Redis is preferred for shared rate limiting
+if (redis.status === 'end' || redis.status === 'close' || redis.status === 'error') {
+  console.warn('⚠️  Redis not available, using memory store for rate limiting');
+  redisAvailable = false;
+} else {
+  // Redis is connected or connecting - use it for shared rate limiting
+  redisAvailable = true;
+}
+
+// Simple wrapper to disable Redis if it fails
+const createStore = (prefix) => {
+  if (!redisAvailable) {
+    return undefined; // Use default memory store
+  }
+  
+  try {
+    return new RedisStore({
+      sendCommand: async (...args) => {
+        try {
+          return await redis.call(...args);
+        } catch (err) {
+          // If Redis fails (especially max requests limit), disable it
+          if (err.message && err.message.includes('max requests limit')) {
+            console.warn(`⚠️  Redis limit exceeded, disabling Redis store for ${prefix}`);
+            redisAvailable = false;
+          }
+          // Throw error to trigger fallback - rate limiter will handle it
+          throw err;
+        }
+      },
+      prefix: prefix
+    });
+  } catch (err) {
+    console.warn(`⚠️  Redis store creation failed for ${prefix}, using memory store`);
+    redisAvailable = false;
+    return undefined;
+  }
+};
+
+// Create stores (will be undefined if Redis fails)
+let apiRedisStore = createStore('ratelimit:api:');
+let authRedisStore = createStore('ratelimit:auth:');
 
 /**
  * General API rate limiter
@@ -23,7 +58,7 @@ const authRedisStore = new RedisStore({
  * Apply rate limiting only for Students and anonymous users
  */
 const apiLimiter = rateLimit({
-  store: apiRedisStore,
+  store: apiRedisStore, // undefined = use memory store if Redis fails
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: parseInt(process.env.RATE_LIMIT_MAX || '1200', 10), // Optimized for 10k-15k active users
   message: {
@@ -80,7 +115,7 @@ const apiLimiter = rateLimit({
  * Strict limiter for authentication endpoints
  */
 const authLimiter = rateLimit({
-  store: authRedisStore,
+  store: authRedisStore, // undefined = use memory store if Redis fails
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5, // 5 login attempts per 15 minutes
   message: {

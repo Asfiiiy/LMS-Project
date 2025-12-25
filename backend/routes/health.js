@@ -58,9 +58,16 @@ router.get("/", async (req, res) => {
   }
 
   // === REDIS CHECK ===
+  // Skip Redis ping to reduce usage (only check connection status)
   try {
-    await redis.ping();
-    health.checks.redis.status = "ok";
+    // Check if Redis is connected without ping (reduces Redis usage)
+    if (redis.status === 'ready' || redis.status === 'connect') {
+      health.checks.redis.status = "ok";
+    } else {
+      health.checks.redis.status = "error";
+      health.checks.redis.error = "Redis not connected";
+      health.status = "degraded";
+    }
   } catch (err) {
     health.checks.redis.status = "error";
     health.checks.redis.error = err.message;
