@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { apiService } from '@/app/services/api';
 import ProtectedRoute from '@/app/components/ProtectedRoute';
+import { showSweetAlert } from '@/app/components/SweetAlert';
 
 interface CPDTopic {
   id: number;
@@ -43,6 +44,7 @@ const ManageCPDCourse = () => {
     deadline: ''
   });
   const [uploadingFiles, setUploadingFiles] = useState<File[]>([]);
+  const [addingTopic, setAddingTopic] = useState(false);
   
   // Quiz Form States
   const [showQuizForm, setShowQuizForm] = useState<{topicId: number; type: 'practice' | 'final'} | null>(null);
@@ -80,10 +82,16 @@ const ManageCPDCourse = () => {
 
   const handleAddTopic = async () => {
     if (!newTopic.title) {
-      alert('Please enter topic title');
+      showSweetAlert({
+        title: 'Validation Error',
+        text: 'Please enter topic title',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+      });
       return;
     }
 
+    setAddingTopic(true);
     try {
       const formData = new FormData();
       formData.append('topic_number', (topics.length + 1).toString());
@@ -98,17 +106,34 @@ const ManageCPDCourse = () => {
       const response = await apiService.addCPDTopic(courseId, formData);
       
       if (response.success) {
-        alert('Topic added successfully!');
         setNewTopic({ title: '', description: '', deadline: '' });
         setUploadingFiles([]);
         setShowNewTopicForm(false);
-        loadCourseData();
+        await loadCourseData();
+        showSweetAlert({
+          title: 'Success!',
+          text: 'Topic added successfully!',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
       } else {
-        alert('Failed to add topic');
+        showSweetAlert({
+          title: 'Error',
+          text: response.message || 'Failed to add topic',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
       }
     } catch (error) {
       console.error('Error adding topic:', error);
-      alert('Failed to add topic');
+      showSweetAlert({
+        title: 'Error',
+        text: 'Failed to add topic. Please try again.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    } finally {
+      setAddingTopic(false);
     }
   };
 
@@ -272,9 +297,23 @@ const ManageCPDCourse = () => {
 
                   <button
                     onClick={handleAddTopic}
-                    className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold"
+                    disabled={addingTopic}
+                    className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
                   >
-                    ✓ Add Topic
+                    {addingTopic ? (
+                      <>
+                        <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>Adding Topic...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>✓</span>
+                        <span>Add Topic</span>
+                      </>
+                    )}
                   </button>
                 </div>
               </div>

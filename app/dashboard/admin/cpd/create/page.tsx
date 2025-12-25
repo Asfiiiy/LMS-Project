@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { apiService } from '@/app/services/api';
 import ProtectedRoute from '@/app/components/ProtectedRoute';
+import { showSweetAlert } from '@/app/components/SweetAlert';
 
 interface Category {
   id: number;
@@ -95,7 +96,12 @@ const CreateCPDCourse = () => {
       const response = await apiService.createCPDCourse(formData);
 
       if (response.success) {
-        alert('CPD Course created successfully!');
+        showSweetAlert({
+          title: 'Success!',
+          text: 'CPD Course created successfully!',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
         // Redirect to role-specific course management page to add topics
         const user = JSON.parse(localStorage.getItem('lms-user') || '{}');
         const role = user?.role?.toLowerCase() || 'admin';

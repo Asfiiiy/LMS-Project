@@ -493,7 +493,14 @@ async function generateCPDCertificates(claimId, studentId = null, courseId = nul
     console.log('   ✅ Data prepared for templates');
 
     // 7. Fill certificate template
-    const certPath = path.join(TEMPLATES_DIR, path.basename(certTemplate.template_path));
+    // Normalize template path - handle both Windows and Linux paths
+    let templateFileName = certTemplate.template_path;
+    // Replace backslashes with forward slashes (Windows to Linux)
+    templateFileName = templateFileName.replace(/\\/g, '/');
+    // Extract just the filename, removing any directory paths
+    templateFileName = path.basename(templateFileName);
+    const certPath = path.join(TEMPLATES_DIR, templateFileName);
+    console.log(`   📄 Certificate template path: ${certPath}`);
     if (!fs.existsSync(certPath)) {
       throw new Error(`Certificate template not found at: ${certPath}`);
     }
@@ -506,7 +513,14 @@ async function generateCPDCertificates(claimId, studentId = null, courseId = nul
     console.log('   ✅ Certificate DOCX generated');
 
     // 8. Fill transcript template
-    const transPath = path.join(TEMPLATES_DIR, path.basename(transTemplate.template_path));
+    // Normalize template path - handle both Windows and Linux paths
+    let transTemplateFileName = transTemplate.template_path;
+    // Replace backslashes with forward slashes (Windows to Linux)
+    transTemplateFileName = transTemplateFileName.replace(/\\/g, '/');
+    // Extract just the filename, removing any directory paths
+    transTemplateFileName = path.basename(transTemplateFileName);
+    const transPath = path.join(TEMPLATES_DIR, transTemplateFileName);
+    console.log(`   📄 Transcript template path: ${transPath}`);
     if (!fs.existsSync(transPath)) {
       throw new Error(`Transcript template not found at: ${transPath}`);
     }
@@ -638,13 +652,30 @@ async function generateCPDCertificates(claimId, studentId = null, courseId = nul
   } catch (error) {
     console.error(`❌ Certificate generation failed for claim ${claimId}:`, error);
 
-    // Log failure
+    // Log failure - get claim details if available
     try {
+      let studentId = null;
+      let courseId = null;
+      
+      // Try to get claim details for error logging
+      try {
+        const [errorClaims] = await pool.execute(
+          `SELECT student_id, course_id FROM certificate_claims WHERE id = ?`,
+          [claimId]
+        );
+        if (errorClaims.length > 0) {
+          studentId = errorClaims[0].student_id;
+          courseId = errorClaims[0].course_id;
+        }
+      } catch (dbError) {
+        console.error('Could not fetch claim details for error logging:', dbError.message);
+      }
+      
       await pool.execute(
         `INSERT INTO generated_certificates (
           claim_id, student_id, course_id, course_type, status, error_message
         ) VALUES (?, ?, ?, 'cpd', 'failed', ?)`,
-        [claimId, claims[0]?.student_id, claims[0]?.course_id, error.message]
+        [claimId, studentId, courseId, error.message]
       );
     } catch (logError) {
       console.error('Failed to log error:', logError);
@@ -722,8 +753,14 @@ async function addRegistrationNumberAndGeneratePDF(generatedCertId, registration
     console.log('   ✅ Data prepared with registration number');
 
     // 5. Re-generate DOCX files with registration number
-    const certPath = path.join(TEMPLATES_DIR, path.basename(certTemplate.template_path));
-    const transPath = path.join(TEMPLATES_DIR, path.basename(transTemplate.template_path));
+    // Normalize template paths - handle both Windows and Linux paths
+    let certTemplateFileName = certTemplate.template_path.replace(/\\/g, '/');
+    certTemplateFileName = path.basename(certTemplateFileName);
+    let transTemplateFileName = transTemplate.template_path.replace(/\\/g, '/');
+    transTemplateFileName = path.basename(transTemplateFileName);
+    
+    const certPath = path.join(TEMPLATES_DIR, certTemplateFileName);
+    const transPath = path.join(TEMPLATES_DIR, transTemplateFileName);
 
     const certDocxBuffer = await fillTemplate(certPath, certData);
     const transDocxBuffer = await fillTemplate(transPath, transData);

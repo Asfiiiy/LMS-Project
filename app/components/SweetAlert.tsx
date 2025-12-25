@@ -27,7 +27,19 @@ const notifyListeners = () => {
 };
 
 export const showSweetAlert = (
-  title: string,
+  titleOrOptions: string | {
+    title: string;
+    text?: string;
+    icon?: SweetAlertType;
+    type?: SweetAlertType;
+    showConfirmButton?: boolean;
+    confirmButtonText?: string;
+    showCancelButton?: boolean;
+    cancelButtonText?: string;
+    onConfirm?: () => void;
+    onCancel?: () => void;
+    timer?: number;
+  },
   text?: string,
   type: SweetAlertType = 'success',
   options?: {
@@ -40,32 +52,69 @@ export const showSweetAlert = (
     timer?: number;
   }
 ) => {
+  // Support both object-based and parameter-based calls
+  let alertTitle: string;
+  let alertText: string | undefined;
+  let alertType: SweetAlertType;
+  let alertOptions: {
+    showConfirmButton?: boolean;
+    confirmButtonText?: string;
+    showCancelButton?: boolean;
+    cancelButtonText?: string;
+    onConfirm?: () => void;
+    onCancel?: () => void;
+    timer?: number;
+  } = {};
+
+  if (typeof titleOrOptions === 'object') {
+    // Object-based call: showSweetAlert({ title, text, icon, ... })
+    alertTitle = titleOrOptions.title;
+    alertText = titleOrOptions.text;
+    alertType = titleOrOptions.icon || titleOrOptions.type || 'success';
+    alertOptions = {
+      showConfirmButton: titleOrOptions.showConfirmButton,
+      confirmButtonText: titleOrOptions.confirmButtonText,
+      showCancelButton: titleOrOptions.showCancelButton,
+      cancelButtonText: titleOrOptions.cancelButtonText,
+      onConfirm: titleOrOptions.onConfirm,
+      onCancel: titleOrOptions.onCancel,
+      timer: titleOrOptions.timer,
+      ...options // Merge with additional options if provided
+    };
+  } else {
+    // Parameter-based call: showSweetAlert(title, text, type, options)
+    alertTitle = titleOrOptions;
+    alertText = text;
+    alertType = type;
+    alertOptions = options || {};
+  }
+
   const id = Math.random().toString(36).substring(7);
   const alert: SweetAlert = {
     id,
-    title,
-    text,
-    type,
-    showConfirmButton: options?.showConfirmButton !== false,
-    confirmButtonText: options?.confirmButtonText || 'OK',
-    showCancelButton: options?.showCancelButton || false,
-    cancelButtonText: options?.cancelButtonText || 'Cancel',
-    onConfirm: options?.onConfirm,
-    onCancel: options?.onCancel,
-    timer: options?.timer
+    title: alertTitle,
+    text: alertText,
+    type: alertType,
+    showConfirmButton: alertOptions?.showConfirmButton !== false,
+    confirmButtonText: alertOptions?.confirmButtonText || 'OK',
+    showCancelButton: alertOptions?.showCancelButton || false,
+    cancelButtonText: alertOptions?.cancelButtonText || 'Cancel',
+    onConfirm: alertOptions?.onConfirm,
+    onCancel: alertOptions?.onCancel,
+    timer: alertOptions?.timer
   };
 
   currentAlert = alert;
   notifyListeners();
 
   // Auto close if timer is set
-  if (options?.timer) {
+  if (alertOptions?.timer) {
     setTimeout(() => {
       closeSweetAlert();
-      if (options?.onConfirm) {
-        options.onConfirm();
+      if (alertOptions?.onConfirm) {
+        alertOptions.onConfirm();
       }
-    }, options.timer);
+    }, alertOptions.timer);
   }
 };
 
