@@ -1180,8 +1180,34 @@ router.post('/generated/:id/deliver', auth, async (req, res) => {
     
     // BYPASS CLOUDINARY - Serve PDFs directly from backend
     // Create public URLs that point to frontend (Next.js API routes proxy to backend)
-    const certPublicUrl = `http://localhost:3000/api/certificates/public-download/cert/${certificate.registration_number}`;
-    const transPublicUrl = `http://localhost:3000/api/certificates/public-download/trans/${certificate.registration_number}`;
+    // Use environment variable for frontend URL, or construct from request
+    let frontendBaseUrl = process.env.FRONTEND_URL || process.env.NEXT_PUBLIC_FRONTEND_URL;
+    
+    // If not set, try to construct from request (for production with domain)
+    if (!frontendBaseUrl && req) {
+      const protocol = req.protocol || (req.secure ? 'https' : 'http');
+      const host = req.get('host') || '';
+      
+      // If behind reverse proxy (Nginx), use same host (domain)
+      // Otherwise, replace backend port (5000) with frontend port (3000)
+      if (host.includes(':5000')) {
+        frontendBaseUrl = `${protocol}://${host.replace(':5000', ':3000')}`;
+      } else if (host && !host.includes('localhost')) {
+        // Production domain (e.g., lms.inspirelondoncollege.com)
+        frontendBaseUrl = `${protocol}://${host}`;
+      } else {
+        // Fallback to relative URL (will use current domain)
+        frontendBaseUrl = '';
+      }
+    }
+    
+    // Fallback to relative URL if still not set (will use current domain)
+    if (!frontendBaseUrl) {
+      frontendBaseUrl = '';
+    }
+    
+    const certPublicUrl = `${frontendBaseUrl}/api/certificates/public-download/cert/${certificate.registration_number}`;
+    const transPublicUrl = `${frontendBaseUrl}/api/certificates/public-download/trans/${certificate.registration_number}`;
     
     // Save PDF paths locally (relative to backend)
     const relativeCertPath = path.relative(path.join(__dirname, '..'), certPdfPath);

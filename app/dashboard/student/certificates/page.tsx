@@ -96,6 +96,22 @@ function CertificatesPage() {
     }
   }, []);
 
+  // Helper function to fix localhost URLs to current domain
+  const fixCertificateUrl = (url: string): string => {
+    if (!url) return url;
+    // If URL contains localhost, replace with current origin
+    if (url.includes('localhost:3000') || url.includes('localhost')) {
+      const currentOrigin = typeof window !== 'undefined' ? window.location.origin : '';
+      return url.replace(/https?:\/\/[^/]+/, currentOrigin);
+    }
+    // If URL is relative, make it absolute with current origin
+    if (url.startsWith('/')) {
+      const currentOrigin = typeof window !== 'undefined' ? window.location.origin : '';
+      return `${currentOrigin}${url}`;
+    }
+    return url;
+  };
+
   const fetchData = async (studentId: number) => {
     try {
       setLoading(true);
@@ -304,7 +320,7 @@ function CertificatesPage() {
                             {/* Certificate Buttons */}
                             <div className="flex gap-2">
                               <a
-                                href={cert.certificate_pdf_url + '?view=true'}
+                                href={fixCertificateUrl(cert.certificate_pdf_url) + '?view=true'}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-2 rounded-lg font-medium hover:shadow-lg transition-all text-sm"
@@ -312,7 +328,7 @@ function CertificatesPage() {
                                 👁️ View
                               </a>
                               <a
-                                href={cert.certificate_pdf_url}
+                                href={fixCertificateUrl(cert.certificate_pdf_url)}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-2 rounded-lg font-medium hover:shadow-lg transition-all text-sm"
@@ -325,7 +341,7 @@ function CertificatesPage() {
                             {/* Transcript Buttons */}
                             <div className="flex gap-2">
                               <a
-                                href={cert.transcript_pdf_url + '?view=true'}
+                                href={fixCertificateUrl(cert.transcript_pdf_url) + '?view=true'}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-3 py-2 rounded-lg font-medium hover:shadow-lg transition-all text-sm"
@@ -333,7 +349,7 @@ function CertificatesPage() {
                                 👁️ View
                               </a>
                               <a
-                                href={cert.transcript_pdf_url}
+                                href={fixCertificateUrl(cert.transcript_pdf_url)}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-3 py-2 rounded-lg font-medium hover:shadow-lg transition-all text-sm"
