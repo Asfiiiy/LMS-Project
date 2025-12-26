@@ -94,7 +94,8 @@ const StudentCPDCourse = () => {
     const user = JSON.parse(localStorage.getItem('lms-user') || 'null');
     if (user && user.id) {
       setUserId(user.id);
-      const role = user.role || null;
+      // Normalize role to match UserRole type (capitalize first letter)
+      const role = user.role ? (user.role.charAt(0).toUpperCase() + user.role.slice(1)) : null;
       setUserRole(role as 'Admin' | 'Tutor' | 'Student' | null);
       loadCourseData(user.id);
     } else {

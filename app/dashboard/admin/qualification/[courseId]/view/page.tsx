@@ -256,12 +256,20 @@ export default function ViewQualificationCourse() {
       setPdfError(false);
       // Use proxy to force inline display instead of download
       const apiUrl = getApiUrl();
-      const proxyUrl = `${apiUrl}/api/admin/proxy-pdf?url=${encodeURIComponent(filePath)}`;
+      // Ensure filePath uses HTTPS (fix Mixed Content error)
+      const secureFilePath = filePath && filePath.startsWith('http://')
+        ? filePath.replace('http://', 'https://')
+        : filePath;
+      const proxyUrl = `${apiUrl}/api/admin/proxy-pdf?url=${encodeURIComponent(secureFilePath)}`;
       setPdfSrc(proxyUrl);
     } else {
       // For other files, open in new tab
       console.log('[Qualification View] Opening non-PDF in new tab');
-      window.open(filePath, '_blank');
+      // Ensure HTTPS for file URLs
+      const secureFilePath = filePath && filePath.startsWith('http://')
+        ? filePath.replace('http://', 'https://')
+        : filePath;
+      window.open(secureFilePath, '_blank');
     }
   };
 
