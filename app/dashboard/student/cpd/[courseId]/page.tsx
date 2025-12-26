@@ -49,6 +49,46 @@ const StudentCPDCourse = () => {
   const [userRole, setUserRole] = useState<'Admin' | 'Tutor' | 'Student' | null>(null);
   const [viewingFile, setViewingFile] = useState<{url: string; name: string} | null>(null);
   const [loadingQuiz, setLoadingQuiz] = useState<{quizId: number; type: 'practice' | 'final'} | null>(null);
+  const [pdfViewerUrl, setPdfViewerUrl] = useState<string>('');
+  const [downloadUrl, setDownloadUrl] = useState<string>('');
+
+  // Compute PDF viewer URL and download URL with HTTPS
+  useEffect(() => {
+    if (viewingFile) {
+      const computeUrls = async () => {
+        const { getApiUrl } = await import('@/app/utils/apiUrl');
+        const apiUrl = getApiUrl();
+        
+        // Ensure file URL uses HTTPS
+        let secureFileUrl = viewingFile.url;
+        if (secureFileUrl.startsWith('http://')) {
+          secureFileUrl = secureFileUrl.replace('http://', 'https://');
+        }
+        
+        // Set download URL
+        const secureDownloadUrl = `${apiUrl}/api/cpd/download-file?url=${encodeURIComponent(secureFileUrl)}&filename=${encodeURIComponent(viewingFile.name)}`;
+        setDownloadUrl(secureDownloadUrl);
+        
+        // If it's a PDF, compute viewer URL
+        if (viewingFile.url.includes('.pdf') || viewingFile.name.endsWith('.pdf')) {
+          // If it's a Cloudinary URL, use proxy endpoint
+          if (secureFileUrl.includes('cloudinary.com')) {
+            const proxyUrl = `${apiUrl}/api/cpd/proxy-pdf?url=${encodeURIComponent(secureFileUrl)}`;
+            setPdfViewerUrl(proxyUrl);
+          } else {
+            // Direct PDF URL with viewer parameters
+            setPdfViewerUrl(`${secureFileUrl}#toolbar=1&navpanes=0&scrollbar=1`);
+          }
+        } else {
+          setPdfViewerUrl('');
+        }
+      };
+      computeUrls();
+    } else {
+      setPdfViewerUrl('');
+      setDownloadUrl('');
+    }
+  }, [viewingFile]);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('lms-user') || 'null');
@@ -108,8 +148,14 @@ const StudentCPDCourse = () => {
     router.push(`/dashboard/student/cpd/${courseId}/claim-certificate`);
   };
 
-  const getDownloadUrl = (fileUrl: string, fileName: string) => {
-    return `http://localhost:5000/api/cpd/download-file?url=${encodeURIComponent(fileUrl)}&filename=${encodeURIComponent(fileName)}`;
+  const getDownloadUrl = async (fileUrl: string, fileName: string) => {
+    const { getApiUrl } = await import('@/app/utils/apiUrl');
+    const apiUrl = getApiUrl();
+    // Ensure fileUrl uses HTTPS if it's a Cloudinary URL
+    const secureFileUrl = fileUrl && fileUrl.startsWith('http://') 
+      ? fileUrl.replace('http://', 'https://')
+      : fileUrl;
+    return `${apiUrl}/api/cpd/download-file?url=${encodeURIComponent(secureFileUrl)}&filename=${encodeURIComponent(fileName)}`;
   };
 
   const handleStartQuiz = async (quizId: number, quizType: 'practice' | 'final') => {
@@ -465,7 +511,7 @@ const StudentCPDCourse = () => {
                   <h3 className="font-semibold text-lg">{viewingFile.name}</h3>
                   <div className="flex items-center gap-3">
                     <a
-                      href={getDownloadUrl(viewingFile.url, viewingFile.name)}
+                      href={downloadUrl}
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium flex items-center gap-2"
                     >
                       ⬇️ Download
@@ -481,11 +527,7 @@ const StudentCPDCourse = () => {
               <div className="flex-1 overflow-hidden">
                 {viewingFile.url.includes('.pdf') || viewingFile.name.endsWith('.pdf') ? (
                   <iframe
-                    src={
-                      viewingFile.url.includes('cloudinary.com')
-                        ? `http://localhost:5000/api/cpd/proxy-pdf?url=${encodeURIComponent(viewingFile.url)}`
-                        : `${viewingFile.url}#toolbar=1&navpanes=0&scrollbar=1`
-                    }
+                    src={pdfViewerUrl}
                     className="w-full h-full"
                     title={viewingFile.name}
                     allow="fullscreen"
