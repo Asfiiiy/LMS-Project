@@ -59,18 +59,41 @@ export async function GET(
     const fullBackendUrl = `${backendUrl}/api/certificates/public-download/${type}/${regNumber}${viewInline ? '?view=true' : ''}`;
     console.log(`🔗 Proxying to backend: ${fullBackendUrl}`);
     
-    const response = await fetch(fullBackendUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    let response: Response;
+    try {
+      response = await fetch(fullBackendUrl, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/pdf,application/json,*/*',
+        },
+        // Add timeout
+        signal: AbortSignal.timeout(30000), // 30 second timeout
+      });
+    } catch (fetchError: any) {
+      console.error(`❌ Fetch error:`, fetchError);
+      return NextResponse.json(
+        { success: false, message: `Failed to connect to backend: ${fetchError.message}` },
+        { status: 502 }
+      );
+    }
     
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      console.error(`Backend error: ${response.status}`, errorData);
+      // Try to get error message from response
+      let errorMessage = 'Backend error';
+      try {
+        const errorText = await response.text();
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.message || errorMessage;
+        } catch {
+          errorMessage = errorText || `HTTP ${response.status}`;
+        }
+      } catch (e) {
+        errorMessage = `HTTP ${response.status}`;
+      }
+      console.error(`❌ Backend error: ${response.status} - ${errorMessage}`);
       return NextResponse.json(
-        { success: false, message: errorData.message || 'Backend error' },
+        { success: false, message: errorMessage },
         { status: response.status }
       );
     }
