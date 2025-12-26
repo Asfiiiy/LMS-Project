@@ -184,7 +184,7 @@ export default function CertificateClaimsManagement() {
     }
   };
 
-  const handleViewCertificate = (claimId: number, type: 'certificate' | 'transcript') => {
+  const handleViewCertificate = async (claimId: number, type: 'certificate' | 'transcript') => {
     const cert = generatedCerts.get(claimId);
     if (!cert) {
       showToast('Certificate not generated yet', 'warning');
@@ -219,9 +219,11 @@ export default function CertificateClaimsManagement() {
     }
     
     // Use the API endpoint to serve the file with token and view=true parameter
-    const fileUrl = `http://localhost:5000/api/certificates/generated/${cert.id}/file/${type}?token=${encodeURIComponent(token)}&view=true`;
+    // Get API URL dynamically (handles HTTPS in production)
+    const { getApiUrl } = await import('@/app/utils/apiUrl');
+    const apiUrl = getApiUrl();
+    const fileUrl = `${apiUrl}/api/certificates/generated/${cert.id}/file/${type}?token=${encodeURIComponent(token)}&view=true`;
     console.log('Opening URL:', fileUrl);
-    
     window.open(fileUrl, '_blank');
   };
 

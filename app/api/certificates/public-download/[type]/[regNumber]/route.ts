@@ -37,10 +37,29 @@ export async function GET(
     
     console.log(`📥 Frontend proxy ${viewInline ? 'view' : 'download'} request: ${type} for ${regNumber}`);
     
-    // Proxy request to backend
-    const backendUrl = `http://localhost:5000/api/certificates/public-download/${type}/${regNumber}${viewInline ? '?view=true' : ''}`;
+    // Get backend URL - for server-side, always use localhost:5000 (backend is on same server)
+    // For production VPS, backend runs on localhost:5000
+    let backendUrl: string;
+    if (process.env.NEXT_PUBLIC_API_URL) {
+      backendUrl = process.env.NEXT_PUBLIC_API_URL;
+      // If it's HTTPS, convert to HTTP for localhost backend connection
+      if (backendUrl.startsWith('https://') && backendUrl.includes('localhost')) {
+        backendUrl = backendUrl.replace('https://', 'http://');
+      }
+    } else {
+      // Server-side: backend is always on localhost:5000
+      backendUrl = 'http://localhost:5000';
+    }
     
-    const response = await fetch(backendUrl, {
+    // Ensure it doesn't end with /api (we'll add it)
+    if (backendUrl.endsWith('/api')) {
+      backendUrl = backendUrl.slice(0, -4);
+    }
+    
+    const fullBackendUrl = `${backendUrl}/api/certificates/public-download/${type}/${regNumber}${viewInline ? '?view=true' : ''}`;
+    console.log(`🔗 Proxying to backend: ${fullBackendUrl}`);
+    
+    const response = await fetch(fullBackendUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
