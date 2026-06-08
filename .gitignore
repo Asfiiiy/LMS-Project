@@ -4,5 +4,10 @@ backend/node_modules/
 backend/logs/
 *.log
 .env
+.env.*
+*.env
+*.env.*
 backups/
 tsconfig.tsbuildinfo
+*.backup
+.env.local
