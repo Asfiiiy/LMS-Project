@@ -1,0 +1,947 @@
+================================================================================
+STUDENT PROFILE & PAYMENT SYSTEM - IMPLEMENTATION TODO LIST
+================================================================================
+Follow this list step by step to implement the complete system.
+PRIORITY ORDER: Start with Step 1, then 2, then 3, etc.
+
+================================================================================
+STEP 1: DATABASE SETUP (DO THIS FIRST)
+================================================================================
+
+[ ] 1.1 Create database migration file
+    File: backend/migrations/create_student_profiles_table.sql
+    - Create student_profiles table with all required fields
+    - Include profile picture field (file_path VARCHAR(255))
+    - Add indexes for performance
+    - Add foreign key constraint to users table
+
+[ ] 1.2 Run migration
+    - Execute SQL migration in database
+    - Verify table structure
+
+[ ] 1.3 Update users table (if needed)
+    - Ensure users table has profile_picture column or use student_profiles table
+    - Check if any additional indexes needed
+
+================================================================================
+PHASE 2: BACKEND API DEVELOPMENT
+================================================================================
+
+[ ] 2.1 Create student profile routes file
+    File: backend/routes/studentProfile.js
+    - GET /api/student/profile - Get current student's profile
+    - PUT /api/student/profile - Update student profile
+    - POST /api/student/profile/picture - Upload profile picture
+    - GET /api/student/profile/status - Check profile completion status
+    - GET /api/admin/students/profiles - Get all students profiles (Admin)
+    - GET /api/admin/students/:studentId/profile - Get single student profile (Admin)
+
+[ ] 2.2 Implement profile picture upload
+    - Use multer for file uploads
+    - Store in uploads/profiles/ directory
+    - Support image formats: JPG, PNG, WEBP
+    - Max file size: 5MB
+    - Resize/optimize images if needed
+    - Update file_path in database
+
+[ ] 2.3 Add profile validation
+    - Validate all required fields
+    - Validate date formats
+    - Validate VARK scores (0-20 range)
+    - Validate file uploads
+
+[ ] 2.4 Update auth.js to check profile status
+    File: backend/routes/auth.js
+    - Add profile completion check in login response
+    - Return is_profile_complete flag
+
+[ ] 2.5 Update admin.js user creation
+    File: backend/routes/admin.js
+    - When creating student user, create initial student_profiles row
+    - Set is_profile_complete = false
+    - Set default values where applicable
+
+[ ] 2.6 Add profile completion calculation logic
+    - Function to check if profile is complete
+    - Update is_profile_complete flag automatically
+    - Set profile_completed_at timestamp
+
+================================================================================
+PHASE 3: FRONTEND - PROFILE COMPLETION PAGE
+================================================================================
+
+[ ] 3.1 Create complete profile page
+    File: app/dashboard/student/complete-profile/page.tsx
+    - Welcome message and instructions
+    - Multi-section form layout
+    - Profile picture upload section
+    - All required fields with validation
+    - Save button
+    - Skip button (with warning popup)
+
+[ ] 3.2 Create profile form component
+    File: app/components/StudentProfileForm.tsx
+    - Reusable form component
+    - Sections:
+      * Personal Information
+      * Professional Information
+      * Learning Preferences (VARK)
+      * Skills Assessment
+    - Profile picture upload component
+    - Form validation
+    - Submit handler
+
+[ ] 3.3 Create profile picture upload component
+    File: app/components/ProfilePictureUpload.tsx
+    - Image preview
+    - Upload button
+    - Remove/change picture option
+    - Image cropping/resizing (optional)
+    - Loading states
+
+[ ] 3.4 Add warning popup component
+    File: app/components/ProfileIncompleteWarning.tsx
+    - Warning message about incomplete profile
+    - "Complete Now" button
+    - "Skip for Now" button
+    - Show on dashboard if profile incomplete
+
+[ ] 3.5 Style complete profile page
+    - Responsive design
+    - Progress indicator
+    - Form sections with clear labels
+    - Error messages
+    - Success feedback
+
+================================================================================
+PHASE 4: FRONTEND - STUDENT PROFILE PAGE
+================================================================================
+
+[ ] 4.1 Create student profile page
+    File: app/dashboard/student/profile/page.tsx
+    - View mode (default)
+    - Edit mode toggle
+    - Display all profile information
+    - Profile picture display
+    - Edit button
+
+[ ] 4.2 Add profile link to student dashboard
+    File: app/dashboard/student/page.tsx
+    - Add "Profile" link in navigation/sidebar
+    - Show profile completion badge/indicator
+    - Show warning if incomplete
+
+[ ] 4.3 Implement profile warning popup
+    - Show on dashboard load if profile incomplete
+    - Dismissible but reappears on next login
+    - Link to complete profile page
+
+[ ] 4.4 Add profile picture display
+    - Show in profile page
+    - Show in dashboard header (optional)
+    - Default avatar if no picture
+
+================================================================================
+PHASE 5: FRONTEND - ADMIN STUDENTS PROFILE VIEW
+================================================================================
+
+[ ] 5.1 Create admin students profile list page
+    File: app/dashboard/admin/students/profile/page.tsx
+    - Table showing all students
+    - Columns: Name, Email, Profile Status, Last Updated, Actions
+    - Search/filter functionality
+    - Pagination
+
+[ ] 5.2 Create student profile detail view (Admin)
+    File: app/components/StudentProfileDetail.tsx
+    - Modal or separate page
+    - Display all profile fields
+    - Profile picture display
+    - Read-only view (or editable if needed)
+    - Print/export option (optional)
+
+[ ] 5.3 Add students profile tab to admin dashboard
+    File: app/dashboard/admin/page.tsx
+    - Add "Students Profile" tab/section
+    - Link to students profile list page
+    - Show count of incomplete profiles
+
+[ ] 5.4 Add profile status indicators
+    - Green badge for complete profiles
+    - Yellow badge for incomplete profiles
+    - Show completion percentage (optional)
+
+================================================================================
+PHASE 6: API SERVICE INTEGRATION
+================================================================================
+
+[ ] 6.1 Add profile API methods
+    File: app/services/api.ts
+    - getStudentProfile()
+    - updateStudentProfile(data)
+    - uploadProfilePicture(file)
+    - getProfileStatus()
+    - getAllStudentsProfiles() // Admin
+    - getStudentProfileById(studentId) // Admin
+
+[ ] 6.2 Add error handling
+    - Network error handling
+    - Validation error display
+    - File upload error handling
+
+================================================================================
+PHASE 7: VALIDATION & FORM HANDLING
+================================================================================
+
+[ ] 7.1 Implement form validation
+    - Required field validation
+    - Date validation (DOB must be in past)
+    - VARK score validation (0-20)
+    - Email format validation (read-only but verify)
+    - File type validation for profile picture
+
+[ ] 7.2 Add form error messages
+    - Field-level error messages
+    - Submit error handling
+    - Success messages
+
+[ ] 7.3 Add loading states
+    - Form submission loading
+    - File upload loading
+    - Data fetching loading
+
+================================================================================
+PHASE 8: UI/UX ENHANCEMENTS
+================================================================================
+
+[ ] 8.1 Design profile form layout
+    - Clean, organized sections
+    - Clear field labels
+    - Help text where needed
+    - Responsive grid layout
+
+[ ] 8.2 Add VARK visualization
+    - Show scores with progress bars
+    - Display interpretation text
+    - Color-coded bars
+
+[ ] 8.3 Profile picture styling
+    - Circular avatar display
+    - Hover effects
+    - Upload area styling
+    - Preview functionality
+
+[ ] 8.4 Add profile completion progress
+    - Progress bar showing completion percentage
+    - Show on dashboard
+    - Show on profile page
+
+[ ] 8.5 Mobile responsiveness
+    - Ensure all forms work on mobile
+    - Responsive tables
+    - Touch-friendly inputs
+
+================================================================================
+PHASE 9: PROFILE DATA DISPLAY
+================================================================================
+
+[ ] 9.1 Format date display
+    - Format Date of Birth nicely
+    - Show age calculation (optional)
+
+[ ] 9.2 Format VARK scores display
+    - Show all four scores
+    - Display interpretation
+    - Visual representation
+
+[ ] 9.3 Format skills display
+    - Display English & Literacy level
+    - Display ICT Skills level
+    - Display Special Learning Needs
+
+[ ] 9.4 Add profile summary card
+    - Quick view of key information
+    - Show in dashboard
+    - Show in admin student list
+
+================================================================================
+PHASE 10: TESTING & POLISH
+================================================================================
+
+[ ] 10.1 Test profile creation flow
+    - New student registration
+    - Profile completion
+    - Profile picture upload
+    - Skip functionality
+
+[ ] 10.2 Test profile editing
+    - Update existing profile
+    - Change profile picture
+    - Update all fields
+
+[ ] 10.3 Test admin views
+    - View all students profiles
+    - View individual student profile
+    - Search and filter
+
+[ ] 10.4 Test validation
+    - Required fields
+    - Invalid data
+    - File upload limits
+    - Date validation
+
+[ ] 10.5 Test responsive design
+    - Mobile view
+    - Tablet view
+    - Desktop view
+
+[ ] 10.6 Test warning popup
+    - Shows when profile incomplete
+    - Can be dismissed
+    - Links work correctly
+
+[ ] 10.7 Test profile completion logic
+    - Profile marked complete when all required fields filled
+    - Warning disappears when complete
+    - Status updates correctly
+
+================================================================================
+PHASE 11: DEFAULT DATA & EXAMPLES
+================================================================================
+
+[ ] 11.1 Add example data for testing
+    - Pre-populate form with example values
+    - Default VARK scores: 16, 16, 16, 16
+    - Example motivation text
+    - Example previous qualifications
+
+[ ] 11.2 Add help text
+    - Tooltips for fields
+    - Instructions for VARK assessment
+    - Guidance for each section
+
+================================================================================
+PHASE 12: DOCUMENTATION
+================================================================================
+
+[ ] 12.1 Document API endpoints
+    - Request/response formats
+    - Error codes
+    - Authentication requirements
+
+[ ] 12.2 Document database schema
+    - Table structure
+    - Field descriptions
+    - Relationships
+
+[ ] 12.3 Document user flows
+    - Student profile completion flow
+    - Admin viewing flow
+    - Profile update flow
+
+================================================================================
+IMPLEMENTATION NOTES
+================================================================================
+
+PROFILE PICTURE:
+- Store in: uploads/profiles/
+- Max size: 5MB
+- Formats: JPG, PNG, WEBP
+- Optional field - students can skip
+- Default avatar if not uploaded
+
+PROFILE COMPLETION:
+- Do NOT block dashboard access
+- Show warning popup if incomplete
+- Students can skip but will see warning
+- Warning reappears on each login until complete
+
+REQUIRED FIELDS:
+- Gender
+- Date of Birth
+- Nationality
+- Current Role
+- Motivation
+- VARK Scores (all 4)
+- English & Literacy
+- ICT Skills
+
+OPTIONAL FIELDS:
+- Profile Picture
+- Ethnicity
+- Previous Qualification
+- Special Learning Needs
+
+READ-ONLY FIELDS (for students):
+- Name (from users table)
+- Email (from users table)
+
+VARK SCORES:
+- Range: 0-20 for each
+- Display all four scores
+- Show interpretation if scores are equal/strong
+
+WARNING POPUP BEHAVIOR:
+- Show on dashboard if profile incomplete
+- Can be dismissed
+- Reappears on next login
+- "Complete Now" button links to profile page
+- "Skip for Now" button dismisses for current session
+
+================================================================================
+OPTIMIZED IMPLEMENTATION ORDER (FOLLOW THIS SEQUENCE)
+================================================================================
+
+STEP 1: DATABASE SETUP
+  ✓ Create student_profiles table migration
+  ✓ Create student_payment_installments table migration
+  ✓ Run migrations and verify
+
+STEP 2: BACKEND API - CORE ENDPOINTS
+  ✓ Create studentProfile.js routes (GET, PUT profile endpoints)
+  ✓ Create paymentInstallments.js routes (GET, POST, PATCH endpoints)
+  ✓ Add profile status check in auth.js
+  ✓ Add profile creation in admin.js user creation
+
+STEP 3: ADMIN/TUTOR DASHBOARD - SHARED COMPONENTS (START HERE FOR UI)
+  ✓ Create shared StudentsProfileView component (used by both admin & tutor)
+  ✓ Create admin students profile page (uses shared component)
+  ✓ Create tutor students profile page (uses shared component)
+  ✓ Add "Students Profile" tab to admin dashboard
+  ✓ Add "Students Profile" tab to tutor dashboard
+  ✓ Create StudentProfileDetail component (view full profile)
+  ✓ Create PaymentManagementView component (shared by admin & tutor)
+  ✓ Create admin payments page (uses shared component)
+  ✓ Create tutor payments page (uses shared component)
+  ✓ Add "Payments" tab to admin dashboard
+  ✓ Add "Payments" tab to tutor dashboard
+  ✓ Create PaymentStatusUpdate component (update payment status)
+
+STEP 4: API SERVICE INTEGRATION
+  ✓ Add all profile API methods to api.ts
+  ✓ Add all payment API methods to api.ts
+  ✓ Add error handling
+
+STEP 5: STUDENT PROFILE COMPLETION PAGE
+  ✓ Create complete-profile page
+  ✓ Create StudentProfileForm component
+  ✓ Create ProfilePictureUpload component
+  ✓ Add validation
+
+STEP 6: STUDENT PROFILE PAGE
+  ✓ Create student profile page (view/edit)
+  ✓ Add profile link to student dashboard
+  ✓ Create ProfileIncompleteWarning component
+
+STEP 7: ENROLLMENT SETUP PAGE (DEADLINES + PAYMENTS)
+  ✓ Create enrollment setup page
+  ✓ Integrate deadline setup (reuse DeadlineSetupModal logic)
+  ✓ Create PaymentInstallmentTable component
+  ✓ Add payment type selector (All Paid / Installment)
+  ✓ Implement add/remove row functionality
+  ✓ Update enrollment flow to redirect to setup page
+
+STEP 8: STUDENT PAYMENT VIEWS
+  ✓ Create student payments page
+  ✓ Create PaymentDueNotification component
+  ✓ Add payment notifications to student dashboard
+  ✓ Add payment link to student dashboard
+
+STEP 9: NOTIFICATIONS & AUTO-UPDATES
+  ✓ Implement due date notification system
+  ✓ Auto-calculate overdue status
+  ✓ Background job for status updates (optional)
+
+STEP 10: UI/UX ENHANCEMENTS
+  ✓ VARK visualization
+  ✓ Profile completion progress
+  ✓ Payment summary components
+  ✓ Responsive design polish
+
+STEP 11: TESTING & VALIDATION
+  ✓ Test all flows
+  ✓ Test validation
+  ✓ Test responsive design
+
+STEP 12: DOCUMENTATION & POLISH
+  ✓ Add help text and tooltips
+  ✓ Document API endpoints
+  ✓ Final polish
+
+================================================================================
+PHASE 13: PAYMENT INSTALLMENT SYSTEM
+================================================================================
+
+[ ] 13.1 Create database migration for payment installments
+    File: backend/migrations/create_student_payment_installments_table.sql
+    - Create student_payment_installments table
+    - Fields: id, student_id, course_id, installment_number, installment_name, 
+              amount, due_date, status (paid/due/overdue), paid_at, 
+              payment_reference, notes, payment_type (all_paid/installment)
+    - Add indexes for performance
+    - Add foreign key constraints
+
+[ ] 13.2 Create enrollment setup page
+    File: app/dashboard/admin/enrollments/[courseId]/[studentId]/setup/page.tsx
+    - Route: /dashboard/admin/enrollments/:courseId/:studentId/setup
+    - Two main sections:
+      * Section 1: Deadline Setup (reuse DeadlineSetupModal logic)
+      * Section 2: Payment Installment Setup
+    - Header showing course name and student name
+    - Save button to save both deadlines and installments
+
+[ ] 13.3 Create payment installment table component
+    File: app/components/PaymentInstallmentTable.tsx
+    - Editable table with columns:
+      * No. (auto-increment)
+      * Instalment (text input)
+      * Amount (number input with currency formatting)
+      * Due Date (date picker)
+      * Status (dropdown: Paid/Due/Overdue)
+    - Add Row button
+    - Remove Row button (per row, disable if only one row)
+    - Payment type selector: "All Paid" vs "Installment"
+    - If "All Paid" selected, hide table and show confirmation
+    - If "Installment" selected, show table
+
+[ ] 13.4 Implement add/remove row functionality
+    - Add row: Creates new row with default values
+    - Remove row: Deletes row (prevent if only one row)
+    - Auto-number rows (No. column)
+    - Maintain row order
+
+[ ] 13.5 Create payment type selector
+    - Radio buttons or toggle: "All Paid" vs "Installment"
+    - If "All Paid": Hide table, show confirmation message
+    - If "Installment": Show table, allow adding rows
+    - Store payment_type in database
+
+[ ] 13.6 Create backend API for payment installments
+    File: backend/routes/paymentInstallments.js
+    - POST /api/admin/enrollments/:courseId/:studentId/installments
+      Body: {
+        payment_type: "all_paid" | "installment",
+        installments: [
+          {
+            installment_number: 1,
+            installment_name: "Enrolment Fee",
+            amount: 49.00,
+            due_date: null,
+            status: "paid"
+          },
+          ...
+        ]
+      }
+    - GET /api/admin/enrollments/:courseId/:studentId/installments
+      Get existing installments for editing
+    - GET /api/student/installments
+      Get student's payment installments
+    - PATCH /api/admin/installments/:installmentId/status
+      Update installment status (paid/due/overdue)
+      Body: {
+        status: "paid",
+        paid_at: "2025-11-25T10:00:00Z",
+        payment_reference: "REF123"
+      }
+
+[ ] 13.7 Update enrollment flow
+    File: app/dashboard/admin/page.tsx (or wherever enrollment happens)
+    - After enrolling student, redirect to setup page
+    - Or: Show deadline popup first, then redirect to installments page
+    - Pass courseId and studentId to setup page
+
+[ ] 13.8 Create due date notification system
+    - Check for due/overdue installments daily (cron job or scheduled task)
+    - Show popup to student when installment is due or overdue
+    - Popup message: "Please submit your installment"
+    - Show installment details in popup
+    - Dismissible but reappears until paid
+
+[ ] 13.9 Create student payment notification popup
+    File: app/components/PaymentDueNotification.tsx
+    - Show on student dashboard if installments are due/overdue
+    - Display installment details (name, amount, due date)
+    - "View Details" button
+    - "Dismiss" button (reappears if still due)
+    - Link to payment/submission page (if needed)
+
+[ ] 13.10 Create admin/tutor payment management tab
+    NOTE: This is now in STEP 3 (3.7-3.11) - Shared components approach
+    - Already covered in Step 3.7-3.11 above
+
+[ ] 13.11 Create payment installment list view (Admin/Tutor)
+    NOTE: This is now part of PaymentManagementView component (Step 3.7)
+    - Already covered in Step 3.7 above
+
+[ ] 13.12 Create payment status update component (Admin/Tutor)
+    NOTE: This is now Step 3.12
+    - Already covered in Step 3.12 above
+
+[ ] 13.13 Create student payment view page
+    File: app/dashboard/student/payments/page.tsx
+    - Show student's payment installments
+    - Table with same columns as admin view
+    - Filter by status
+    - Show payment history
+    - Download receipt option (if paid)
+
+[ ] 13.14 Implement payment status auto-calculation
+    - Auto-mark as "overdue" if due_date < today and status = "due"
+    - Update status on page load
+    - Background job to update overdue statuses daily
+
+[ ] 13.15 Add payment type indicator
+    - Show "All Paid" badge if payment_type = "all_paid"
+    - Show "Installment Plan" badge if payment_type = "installment"
+    - Display in student payment view
+    - Display in admin/tutor views
+
+[ ] 13.16 Create payment summary component
+    - Show total amount
+    - Show paid amount
+    - Show remaining amount
+    - Show next due date
+    - Show in student dashboard
+    - Show in admin/tutor student detail view
+
+[ ] 13.17 Add payment API methods to api.ts
+    File: app/services/api.ts
+    - savePaymentInstallments(courseId, studentId, data)
+    - getPaymentInstallments(courseId, studentId)
+    - getStudentPaymentInstallments()
+    - updateInstallmentStatus(installmentId, status, data)
+    - getAllPaymentInstallments() // Admin/Tutor
+
+[ ] 13.18 Implement payment validation
+    - Amount must be positive number
+    - Due dates validation
+    - At least one installment if payment_type = "installment"
+    - Installment names cannot be empty
+    - Prevent duplicate installment numbers
+
+[ ] 13.19 Style payment installment table
+    - Responsive table design
+    - Mobile-friendly (horizontal scroll or stacked)
+    - Currency formatting (£ symbol)
+    - Date formatting
+    - Status badges (color-coded)
+    - Hover effects
+
+[ ] 13.20 Add payment history tracking
+    - Track when status changes
+    - Track who changed status (admin/tutor)
+    - Store payment reference numbers
+    - Store payment dates
+    - Optional: Store payment method
+
+[ ] 13.21 Create payment reports (optional)
+    - Export payment data to CSV/Excel
+    - Payment summary report
+    - Overdue payments report
+    - Payment history report
+
+[ ] 13.22 Test payment installment flow
+    - Test enrollment setup page
+    - Test adding/removing rows
+    - Test "All Paid" vs "Installment" selection
+    - Test saving installments
+    - Test status updates
+    - Test due date notifications
+    - Test student view
+    - Test admin/tutor management
+
+================================================================================
+PAYMENT INSTALLMENT SYSTEM - IMPLEMENTATION NOTES
+================================================================================
+
+PAYMENT TYPE:
+- "All Paid": Student has paid all fees upfront
+  * Hide installment table
+  * Show confirmation message
+  * Store payment_type = "all_paid" in database
+  * No installments created
+
+- "Installment": Student pays in installments
+  * Show installment table
+  * Allow adding/removing rows
+  * Store payment_type = "installment" in database
+  * Create installment records
+
+TABLE STRUCTURE:
+- No.: Auto-incrementing number (1, 2, 3...)
+- Instalment: Text input (e.g., "Enrolment Fee", "First Month")
+- Amount: Number input with £ currency (e.g., £49, £80)
+- Due Date: Date picker (can be null for enrollment fee if already paid)
+- Status: Dropdown (Paid/Due/Overdue)
+
+STATUS MANAGEMENT:
+- "Paid": Installment has been paid
+  * Can be set by admin/tutor
+  * Requires payment_reference and paid_at
+  * Green badge/indicator
+
+- "Due": Installment is due but not yet paid
+  * Default status for future installments
+  * Yellow badge/indicator
+  * Shows in notifications
+
+- "Overdue": Installment is past due date
+  * Auto-calculated if due_date < today and status = "due"
+  * Red badge/indicator
+  * Shows urgent notification
+
+DUE DATE NOTIFICATIONS:
+- Check daily for due/overdue installments
+- Show popup to student on dashboard
+- Popup shows: Installment name, amount, due date
+- "View Details" button links to payments page
+- "Dismiss" button (reappears if still due)
+- Admin/Tutor can see all due/overdue in their dashboard
+
+ADMIN/TUTOR FEATURES:
+- View all students' payment installments
+- Filter by status (All, Due, Overdue, Paid)
+- Search by student name
+- Update installment status
+- Add payment reference
+- Add payment date
+- Mark as paid
+- View payment history
+
+STUDENT FEATURES:
+- View their payment installments
+- See due dates
+- See payment status
+- Receive notifications for due/overdue payments
+- View payment history
+
+ENROLLMENT SETUP PAGE FLOW:
+1. Admin enrolls student in course
+2. Redirect to: /dashboard/admin/enrollments/:courseId/:studentId/setup
+3. Page shows:
+   - Course name and student name header
+   - Section 1: Deadline Setup (topics/units with deadlines)
+   - Section 2: Payment Setup
+     * Payment type selector (All Paid / Installment)
+     * If Installment: Show table with add/remove rows
+     * If All Paid: Show confirmation message
+4. Save button saves both deadlines and installments
+5. Redirect to enrollment list or course view
+
+INTEGRATION POINTS:
+- Modify enrollment endpoint to redirect to setup page
+- Add payment tab to admin/tutor dashboard
+- Add payment notifications to student dashboard
+- Add payment link to student dashboard sidebar
+
+VALIDATION RULES:
+- Amount must be positive number
+- Due dates can be null (for enrollment fee if already paid)
+- At least one installment required if payment_type = "installment"
+- Installment names cannot be empty
+- Status must be one of: paid, due, overdue
+
+================================================================================
+DATABASE TABLE STRUCTURES & EXAMPLE DATA
+================================================================================
+
+STUDENT_PROFILES TABLE:
+------------------------
+| id | user_id | gender | date_of_birth | nationality | ethnicity | current_role | previous_qualification | motivation | vark_visual | vark_auditory | vark_reading | vark_kinesthetic | english_literacy | ict_skills | special_learning_needs | profile_picture | is_profile_complete | created_at | updated_at |
+|----|---------|--------|---------------|-------------|-----------|--------------|------------------------|------------|-------------|---------------|--------------|-------------------|------------------|------------|----------------------|----------------|---------------------|------------|-------------|
+| 1  | 13      | Female | 2002-01-07    | Indian      | Asian     | Care Staff   | Previous Qualification | To deepen knowledge, improve skills, and build confidence in care practice. | 16 | 16 | 16 | 16 | Moderate | Moderate | None identified | /uploads/profiles/user13.jpg | true | 2025-11-25 10:00:00 | 2025-11-25 10:00:00 |
+
+Example Data:
+- Name: Amanveer Kaur (from users table)
+- Email: gurdass993@gmail.com (from users table)
+- Gender: Female
+- Date of Birth: 07 January 2002
+- Nationality: Indian
+- Ethnicity: Asian
+- Current Role: Care Staff
+- Previous Qualification: (text field)
+- Motivation: To deepen knowledge, improve skills, and build confidence in care practice.
+- VARK Scores: Visual – 16, Auditory – 16, Reading – 16, Kinesthetic – 16
+- VARK Interpretation: strong and equal preference across all four modes
+- English & Literacy: Moderate written and spoken English
+- ICT Skills: Moderate – capable of using MS Word, PowerPoint, and the Internet
+- Special Learning Needs: None identified
+
+STUDENT_PAYMENT_INSTALLMENTS TABLE:
+------------------------------------
+| id | student_id | course_id | installment_number | installment_name | amount | due_date | status | paid_at | payment_reference | payment_type | notes | created_at | updated_at |
+|----|------------|-----------|-------------------|------------------|--------|----------|--------|---------|-------------------|--------------|-------|------------|------------|
+| 1  | 13         | 64        | 1                  | Enrolment Fee    | 49.00  | NULL     | paid   | 2025-11-25 09:00:00 | REF001 | installment | - | 2025-11-25 10:00:00 | 2025-11-25 10:00:00 |
+| 2  | 13         | 64        | 2                  | First Month      | 80.00  | 2025-11-25 | due | NULL | NULL | installment | - | 2025-11-25 10:00:00 | 2025-11-25 10:00:00 |
+| 3  | 13         | 64        | 3                  | 2nd Month        | 80.00  | 2025-12-25 | due | NULL | NULL | installment | - | 2025-11-25 10:00:00 | 2025-11-25 10:00:00 |
+| 4  | 13         | 64        | 4                  | 3rd Month        | 80.00  | 2026-01-25 | due | NULL | NULL | installment | - | 2025-11-25 10:00:00 | 2025-11-25 10:00:00 |
+| 5  | 13         | 64        | 5                  | 4th Month        | 80.00  | 2026-02-25 | due | NULL | NULL | installment | - | 2025-11-25 10:00:00 | 2025-11-25 10:00:00 |
+| 6  | 13         | 64        | 6                  | 5TH Month        | 80.00  | 2026-03-25 | due | NULL | NULL | installment | - | 2025-11-25 10:00:00 | 2025-11-25 10:00:00 |
+| 7  | 13         | 64        | 7                  | 6th Month        | 80.00  | 2026-04-25 | due | NULL | NULL | installment | - | 2025-11-25 10:00:00 | 2025-11-25 10:00:00 |
+
+Example Display in UI:
+┌─────┬──────────────────┬─────────┬──────────────┬────────┐
+│ No. │ Instalment       │ Amount  │ Due Date     │ Status │
+├─────┼──────────────────┼─────────┼──────────────┼────────┤
+│ 1   │ Enrolment Fee    │ £49     │ -            │ Paid   │
+│ 2   │ First Month      │ £80     │ 25/11/2025   │ Due    │
+│ 3   │ 2nd Month        │ £80     │ 25/12/2025   │ Due    │
+│ 4   │ 3rd Month        │ £80     │ 25/01/2026   │ Due    │
+│ 5   │ 4th Month        │ £80     │ 25/02/2026   │ Due    │
+│ 6   │ 5TH Month        │ £80     │ 25/03/2026   │ Due    │
+│ 7   │ 6th Month        │ £80     │ 25/04/2026   │ Due    │
+└─────┴──────────────────┴─────────┴──────────────┴────────┘
+
+STUDENT PROFILE DISPLAY IN UI:
+-------------------------------
+┌─────────────────────────────────────────────────────────────┐
+│                    STUDENT PROFILE                           │
+├─────────────────────────────────────────────────────────────┤
+│ Name:                Amanveer Kaur                          │
+│ Gender:              Female                                  │
+│ Date of Birth:       07 January 2002                        │
+│ Nationality:         Indian                                  │
+│ Ethnicity:           Asian                                   │
+│ Email:               gurdass993@gmail.com                    │
+│ Current Role:        Care Staff                              │
+│ Previous Qualification: [Previous Qualification text]       │
+│ Motivation:          To deepen knowledge, improve skills,    │
+│                      and build confidence in care practice.  │
+│                                                              │
+│ Learning Style (VARK):                                       │
+│   Visual – 16, Auditory – 16, Reading – 16, Kinesthetic – 16│
+│   → strong and equal preference across all four modes       │
+│                                                              │
+│ English & Literacy:  Moderate written and spoken English    │
+│ ICT Skills:          Moderate – capable of using MS Word,   │
+│                      PowerPoint, and the Internet           │
+│ Special Learning Needs: None identified                      │
+└─────────────────────────────────────────────────────────────┘
+
+RELATIONSHIPS:
+--------------
+users (id) ──→ student_profiles (user_id)
+users (id) ──→ student_payment_installments (student_id)
+courses (id) ──→ student_payment_installments (course_id)
+
+JOIN QUERY EXAMPLES:
+--------------------
+-- Get student profile with user info
+SELECT 
+  u.name, 
+  u.email, 
+  sp.gender, 
+  sp.date_of_birth, 
+  sp.nationality,
+  sp.ethnicity,
+  sp.current_role,
+  sp.previous_qualification,
+  sp.motivation,
+  sp.vark_visual,
+  sp.vark_auditory,
+  sp.vark_reading,
+  sp.vark_kinesthetic,
+  sp.english_literacy,
+  sp.ict_skills,
+  sp.special_learning_needs,
+  sp.profile_picture,
+  sp.is_profile_complete
+FROM users u
+LEFT JOIN student_profiles sp ON u.id = sp.user_id
+WHERE u.id = 13;
+
+-- Get student payment installments with course info
+SELECT 
+  spi.installment_number,
+  spi.installment_name,
+  spi.amount,
+  spi.due_date,
+  spi.status,
+  spi.paid_at,
+  spi.payment_reference,
+  c.title as course_title
+FROM student_payment_installments spi
+JOIN courses c ON spi.course_id = c.id
+WHERE spi.student_id = 13 AND spi.course_id = 64
+ORDER BY spi.installment_number;
+
+-- Get all students with profile and payment status
+SELECT 
+  u.id,
+  u.name,
+  u.email,
+  sp.is_profile_complete,
+  COUNT(spi.id) as total_installments,
+  SUM(CASE WHEN spi.status = 'paid' THEN 1 ELSE 0 END) as paid_count,
+  SUM(CASE WHEN spi.status = 'due' THEN 1 ELSE 0 END) as due_count,
+  SUM(CASE WHEN spi.status = 'overdue' THEN 1 ELSE 0 END) as overdue_count
+FROM users u
+LEFT JOIN student_profiles sp ON u.id = sp.user_id
+LEFT JOIN student_payment_installments spi ON u.id = spi.student_id
+WHERE u.role_id = (SELECT id FROM roles WHERE name = 'Student')
+GROUP BY u.id, u.name, u.email, sp.is_profile_complete;
+
+================================================================================
+TABLE FIELD DESCRIPTIONS
+================================================================================
+
+STUDENT_PROFILES TABLE FIELDS:
+-------------------------------
+- id: Primary key, auto-increment
+- user_id: Foreign key to users.id (unique, one profile per user)
+- gender: ENUM('Male', 'Female', 'Other', 'Prefer not to say')
+- date_of_birth: DATE format (YYYY-MM-DD)
+- nationality: VARCHAR(100) - e.g., "Indian", "British"
+- ethnicity: VARCHAR(100) - e.g., "Asian", "White", "Black"
+- current_role: VARCHAR(255) - e.g., "Care Staff", "Nurse"
+- previous_qualification: TEXT - Previous educational qualifications
+- motivation: TEXT - Student's motivation for learning
+- vark_visual: INT (0-20) - Visual learning style score
+- vark_auditory: INT (0-20) - Auditory learning style score
+- vark_reading: INT (0-20) - Reading/writing learning style score
+- vark_kinesthetic: INT (0-20) - Kinesthetic learning style score
+- english_literacy: ENUM('Basic', 'Moderate', 'Advanced', 'Native')
+- ict_skills: ENUM('Basic', 'Moderate', 'Advanced')
+- special_learning_needs: TEXT - Any special learning requirements
+- profile_picture: VARCHAR(255) - File path to profile picture
+- is_profile_complete: BOOLEAN - Whether profile is fully completed
+- profile_completed_at: DATETIME - When profile was marked complete
+- created_at: TIMESTAMP - Record creation time
+- updated_at: TIMESTAMP - Last update time
+
+STUDENT_PAYMENT_INSTALLMENTS TABLE FIELDS:
+-------------------------------------------
+- id: Primary key, auto-increment
+- student_id: Foreign key to users.id
+- course_id: Foreign key to courses.id
+- installment_number: INT - Sequential number (1, 2, 3...)
+- installment_name: VARCHAR(255) - e.g., "Enrolment Fee", "First Month"
+- amount: DECIMAL(10,2) - Payment amount (e.g., 49.00, 80.00)
+- due_date: DATE - When payment is due (NULL if already paid like enrollment fee)
+- status: ENUM('paid', 'due', 'overdue') - Payment status
+- paid_at: DATETIME - When payment was made (NULL if not paid)
+- payment_reference: VARCHAR(255) - Payment reference number
+- payment_type: ENUM('all_paid', 'installment') - Payment method type
+- notes: TEXT - Additional notes about payment
+- created_at: TIMESTAMP - Record creation time
+- updated_at: TIMESTAMP - Last update time
+
+STATUS VALUES:
+--------------
+Payment Status:
+- 'paid': Payment has been received
+- 'due': Payment is due but not yet paid
+- 'overdue': Payment is past due date and not paid
+
+Profile Completion:
+- is_profile_complete = true: All required fields filled
+- is_profile_complete = false: Profile incomplete, show warning
+
+Payment Type:
+- 'all_paid': Student paid all fees upfront (no installments)
+- 'installment': Student pays in installments (table shown)
+
+================================================================================
+END OF TODO LIST
+================================================================================
+

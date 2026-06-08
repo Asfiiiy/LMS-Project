@@ -1,0 +1,50 @@
+/* Modern Profile Page Custom Styles */
+
+/* Section Headers with Icon */
+.profile-section {
+  @apply bg-white rounded-2xl shadow-lg border-2 border-[#11CCEF]/20 overflow-hidden hover:shadow-xl transition-all duration-300;
+}
+
+.profile-section-header {
+  @apply bg-gradient-to-r from-[#11CCEF]/10 to-[#E51791]/10 px-6 py-4 border-b-2 border-[#11CCEF]/20;
+}
+
+.profile-section-title {
+  @apply text-xl font-bold text-gray-900 flex items-center gap-2;
+}
+
+.profile-icon-box {
+  @apply w-8 h-8 rounded-lg bg-gradient-to-br from-[#11CCEF] to-[#E51791] flex items-center justify-center;
+}
+
+/* Info Cards */
+.info-card {
+  @apply bg-gradient-to-br from-[#11CCEF]/5 to-[#E51791]/5 rounded-xl p-4 border border-[#11CCEF]/10 hover:shadow-md transition-shadow;
+}
+
+.info-card-label {
+  @apply text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1;
+}
+
+.info-card-value {
+  @apply text-base font-bold text-gray-900;
+}
+
+/* Buttons */
+.btn-gradient-primary {
+  @apply px-6 py-3 bg-gradient-to-r from-[#11CCEF] to-[#E51791] text-white rounded-xl hover:shadow-lg transition-all font-semibold;
+}
+
+.btn-gradient-secondary {
+  @apply px-4 py-2 bg-gradient-to-r from-[#61CE70] to-[#11CCEF] text-white rounded-lg hover:shadow-md transition-all font-medium;
+}
+
+/* Success Badge */
+.success-badge {
+  @apply inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#61CE70]/20 text-[#61CE70] border-2 border-[#61CE70] font-bold;
+}
+
+/* Verified Checkmark */
+.verified-check {
+  @apply w-6 h-6 rounded-full bg-[#61CE70] flex items-center justify-center;
+}

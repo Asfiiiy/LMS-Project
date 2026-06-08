@@ -1,0 +1,33 @@
+/* Footer.module.css */
+
+.socialLink {
+  transition: all 0.3s ease;
+  transform: translateY(0);
+}
+
+.socialLink:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(17, 204, 239, 0.3);
+}
+
+.footerLink {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.footerLink:hover {
+  color: #11CCEF;
+  transform: translateX(5px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .socialLink {
+    padding: 8px;
+  }
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}

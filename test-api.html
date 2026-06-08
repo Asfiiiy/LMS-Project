@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LMS API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .test { background: white; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 4px solid #4CAF50; }
+        .error { border-left-color: #f44336; }
+        .warning { border-left-color: #ff9800; }
+        h2 { color: #333; }
+        pre { background: #f9f9f9; padding: 10px; border-radius: 3px; overflow-x: auto; }
+        button { background: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+        button:hover { background: #45a049; }
+    </style>
+</head>
+<body>
+    <h1>🧪 LMS API Connection Test</h1>
+    
+    <div id="results"></div>
+    
+    <button onclick="runTests()">Run All Tests</button>
+    <button onclick="clearResults()">Clear</button>
+    
+    <script>
+        const results = document.getElementById('results');
+        
+        function clearResults() {
+            results.innerHTML = '';
+        }
+        
+        function addResult(title, content, type = 'test') {
+            const div = document.createElement('div');
+            div.className = `test ${type}`;
+            div.innerHTML = `<h3>${title}</h3><pre>${content}</pre>`;
+            results.appendChild(div);
+        }
+        
+        async function testEndpoint(name, url, options = {}) {
+            try {
+                addResult(`Testing: ${name}`, `URL: ${url}\nMethod: ${options.method || 'GET'}`, 'warning');
+                
+                const response = await fetch(url, options);
+                const contentType = response.headers.get('content-type');
+                
+                let data;
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                } else {
+                    data = await response.text();
+                }
+                
+                addResult(
+                    `✅ ${name} - Success`,
+                    `Status: ${response.status}\nContent-Type: ${contentType}\n\nResponse:\n${JSON.stringify(data, null, 2)}`,
+                    'test'
+                );
+                return { success: true, data };
+            } catch (error) {
+                addResult(
+                    `❌ ${name} - Failed`,
+                    `Error: ${error.message}\n\nStack:\n${error.stack}`,
+                    'error'
+                );
+                return { success: false, error: error.message };
+            }
+        }
+        
+        async function runTests() {
+            clearResults();
+            
+            addResult('🚀 Starting API Tests', 'Testing backend connectivity...', 'warning');
+            
+            // Test 1: Health endpoint
+            await testEndpoint('Health Check', 'http://localhost:5000/health');
+            
+            // Test 2: Login endpoint (should fail with invalid credentials)
+            await testEndpoint('Login API', 'http://localhost:5000/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: 'test@test.com', password: 'test123' })
+            });
+            
+            // Test 3: Courses endpoint (should fail without auth)
+            await testEndpoint('Courses API (no auth)', 'http://localhost:5000/api/courses');
+            
+            // Test 4: Check API service configuration
+            const apiUrl = window.location.protocol + '//' + window.location.hostname + ':5000/api';
+            addResult(
+                '⚙️ API Service Configuration',
+                `Detected API URL: ${apiUrl}\nCurrent Origin: ${window.location.origin}`,
+                'warning'
+            );
+            
+            addResult('✅ Tests Complete', 'All tests finished. Check results above.', 'test');
+        }
+        
+        // Auto-run on load
+        window.onload = () => {
+            addResult('📋 Instructions', 'Click "Run All Tests" to test API connectivity', 'warning');
+        };
+    </script>
+</body>
+</html>
+

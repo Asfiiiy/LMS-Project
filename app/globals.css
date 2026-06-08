@@ -1,0 +1,97 @@
+@import "tailwindcss";
+@import "quill/dist/quill.snow.css";
+
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+  /* Brand colors */
+  --e-global-color-8c08290: #11CCEF;
+  --e-global-color-34e5317: #E51791;
+  --color-primary: #11CCEF;
+  --color-accent: #E51791;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--color-primary);
+  --color-accent: var(--color-accent);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Force light mode - black text on light background */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #ffffff;
+    --foreground: #000000;
+  }
+}
+
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Hide scrollbar while keeping scroll functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* Line clamp utility for text truncation */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* VARK "Take test" icon – gentle bounce (2s) */
+@keyframes vark-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-vark-bounce {
+  animation: vark-bounce 2s ease-in-out infinite;
+}
+
+/* Consultation quick action card – arrow bounce, Zoom slide-in */
+@keyframes bounce-x {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+.animate-bounce-x {
+  animation: bounce-x 1.5s ease-in-out infinite;
+}
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out forwards;
+}
+
+/* Consultation carousel – phone icon ring/shake */
+@keyframes phone-ring {
+  0%, 100% { transform: rotate(0) scale(1); }
+  10%, 30% { transform: rotate(-4deg) scale(1.05); }
+  20%, 40% { transform: rotate(4deg) scale(1.05); }
+  50% { transform: rotate(0) scale(1); }
+}
+.animate-phone-ring {
+  animation: phone-ring 2s ease-in-out infinite;
+}

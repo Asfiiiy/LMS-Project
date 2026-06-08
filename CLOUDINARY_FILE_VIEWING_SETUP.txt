@@ -1,0 +1,327 @@
+================================================================================
+CLOUDINARY FILE VIEWING SETUP - INLINE PDF DISPLAY METHOD
+================================================================================
+
+This document explains how to properly configure file uploads and viewing 
+for Cloudinary when you need to display PDFs inline (not download them).
+
+================================================================================
+PROBLEM WE SOLVED
+================================================================================
+
+Issue: Files uploaded to Cloudinary were being downloaded instead of 
+displaying inline in the browser. This was causing:
+- 401/403 authentication errors
+- PDFs forcing download instead of viewing
+- CORS issues with iframes
+
+================================================================================
+SOLUTION OVERVIEW
+================================================================================
+
+We use a 3-part system:
+1. Backend Proxy Server (to handle Cloudinary authentication)
+2. Simple Cloudinary Upload (no complex access control)
+3. Frontend PDF Viewer Modal (using iframe with proxy URL)
+
+================================================================================
+STEP 1: CLOUDINARY UPLOAD CONFIGURATION
+================================================================================
+
+Location: lms-app/backend/routes/qualification.js (or cpd.js, admin.js)
+
+CODE:
+```javascript
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinary');
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'lms/qualification',        // Your folder path
+    resource_type: 'raw',               // Use 'raw' for PDFs and documents
+    allowed_formats: ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']
+  }
+});
+
+const upload = multer({ 
+  storage: storage,
+  limits: { fileSize: 100 * 1024 * 1024 } // 100MB limit
+});
+```
+
+KEY POINTS:
+- Keep it SIMPLE - minimal parameters
+- Use 'raw' resource_type for documents
+- Don't add access_mode, upload_preset, or other complex params
+- Let Cloudinary handle default settings
+
+================================================================================
+STEP 2: BACKEND PROXY ENDPOINT
+================================================================================
+
+Location: lms-app/backend/routes/admin.js
+
+PURPOSE: Fetches files from Cloudinary and serves them with correct headers
+to force inline display (not download).
+
+CODE:
+```javascript
+router.get('/proxy-pdf', async (req, res) => {
+  try {
+    const { url } = req.query;
+    if (!url) {
+      return res.status(400).json({ success: false, message: 'URL required' });
+    }
+
+    console.log('[Admin Proxy] Received URL:', url);
+    
+    let fileUrl = decodeURIComponent(url);
+    const isPdf = fileUrl.includes('.pdf') || fileUrl.includes('/raw/');
+    
+    console.log('[Admin Proxy] Will fetch URL directly:', fileUrl);
+    
+    // Fetch from Cloudinary
+    const finalClient = fileUrl.startsWith('https') ? https : http;
+    finalClient.get(fileUrl, (response) => {
+      // Handle errors
+      if (response.statusCode === 401 || response.statusCode === 403) {
+        console.error('File access denied (401/403):', fileUrl);
+        return res.status(401).json({ 
+          success: false, 
+          message: 'File is not publicly accessible.' 
+        });
+      }
+      
+      if (response.statusCode !== 200) {
+        console.error('Failed to fetch file:', response.statusCode, fileUrl);
+        return res.status(response.statusCode).json({ 
+          success: false, 
+          message: `Failed to fetch file: ${response.statusCode}` 
+        });
+      }
+      
+      // *** THIS IS THE KEY PART ***
+      // Set headers to force INLINE display (not download)
+      if (isPdf) {
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'inline; filename="document.pdf"');
+      }
+      
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+      res.setHeader('Cache-Control', 'public, max-age=3600');
+      
+      // Stream the file to response
+      response.pipe(res);
+    }).on('error', (err) => {
+      console.error('Failed to fetch file:', err.message);
+      res.status(500).json({ 
+        success: false, 
+        message: 'Failed to fetch file from storage' 
+      });
+    });
+  } catch (err) {
+    console.error('Proxy PDF error:', err);
+    res.status(500).json({ success: false, message: 'Error proxying PDF' });
+  }
+});
+```
+
+KEY POINTS:
+- Content-Disposition: 'inline' is CRUCIAL - this prevents download
+- CORS headers allow iframe to load the file
+- Proxy handles Cloudinary authentication issues
+- Browser receives file as if it's from your own server
+
+================================================================================
+STEP 3: FRONTEND PDF VIEWER
+================================================================================
+
+Location: lms-app/app/dashboard/admin/qualification/[courseId]/view/page.tsx
+
+SETUP STATE:
+```typescript
+const [pdfSrc, setPdfSrc] = useState('');
+const [pdfLoading, setPdfLoading] = useState(false);
+const [pdfError, setPdfError] = useState(false);
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+```
+
+HANDLE FILE CLICK:
+```typescript
+const handleFileClick = (filePath: string, fileName: string) => {
+  console.log('[Qualification View] File clicked:', fileName);
+  console.log('[Qualification View] File path:', filePath);
+  
+  const fileExtension = fileName.toLowerCase().split('.').pop();
+  
+  // For PDFs, open in viewer modal using proxy
+  if (fileExtension === 'pdf') {
+    console.log('[Qualification View] Opening PDF in viewer');
+    setPdfLoading(true);
+    setPdfError(false);
+    
+    // *** USE THE PROXY URL ***
+    const proxyUrl = `${API_BASE_URL}/admin/proxy-pdf?url=${encodeURIComponent(filePath)}`;
+    setPdfSrc(proxyUrl);
+  } else {
+    // For other files, open in new tab
+    console.log('[Qualification View] Opening non-PDF in new tab');
+    window.open(filePath, '_blank');
+  }
+};
+
+const closePdfViewer = () => {
+  setPdfSrc('');
+  setPdfLoading(false);
+  setPdfError(false);
+};
+```
+
+RENDER THE VIEWER MODAL:
+```typescript
+{pdfSrc && (
+  <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+    <div className="bg-white rounded-lg w-11/12 h-5/6 flex flex-col">
+      {/* Header with close button */}
+      <div className="flex justify-between items-center p-4 border-b">
+        <h3 className="text-lg font-semibold">PDF Viewer</h3>
+        <button
+          onClick={closePdfViewer}
+          className="text-gray-500 hover:text-gray-700"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      {/* PDF iframe */}
+      <div className="flex-1 relative">
+        {pdfLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+            <div className="text-lg">Loading PDF...</div>
+          </div>
+        )}
+        {pdfError && (
+          <div className="flex items-center justify-center h-full">
+            <div className="text-lg text-red-600">Error loading PDF</div>
+          </div>
+        )}
+        
+        {/* *** SIMPLE IFRAME - JUST USE pdfSrc DIRECTLY *** */}
+        <iframe
+          src={pdfSrc}
+          className="w-full h-full"
+          title="PDF Viewer"
+          allow="fullscreen"
+          style={{ border: 'none' }}
+          onLoad={() => {
+            console.log('[Qualification View] PDF loaded successfully');
+            setPdfLoading(false);
+          }}
+          onError={() => {
+            console.error('[Qualification View] PDF load error');
+            setPdfError(true);
+          }}
+        />
+      </div>
+    </div>
+  </div>
+)}
+```
+
+KEY POINTS:
+- Pass Cloudinary URL through proxy endpoint
+- Use encodeURIComponent() to properly encode the URL
+- Iframe src is the proxy URL (NOT the direct Cloudinary URL)
+- Modal provides clean, full-screen PDF viewing experience
+
+================================================================================
+HOW TO USE THIS METHOD FOR NEW FEATURES
+================================================================================
+
+When adding file viewing to ANY new feature:
+
+1. BACKEND UPLOAD:
+   - Use CloudinaryStorage with simple params
+   - Set resource_type: 'raw' for documents
+   - Store the Cloudinary URL in your database
+
+2. BACKEND PROXY:
+   - Use the existing /admin/proxy-pdf endpoint
+   - No need to create new proxy endpoints
+
+3. FRONTEND DISPLAY:
+   - Copy the PDF viewer modal code
+   - On file click, generate proxy URL:
+     `${API_BASE_URL}/admin/proxy-pdf?url=${encodeURIComponent(cloudinaryUrl)}`
+   - Set that as iframe src
+   - Done!
+
+================================================================================
+COMMON MISTAKES TO AVOID
+================================================================================
+
+❌ DON'T use direct Cloudinary URLs in iframe
+   → Will cause download or authentication issues
+
+❌ DON'T add complex Cloudinary upload parameters
+   → Keep it simple: folder, resource_type, allowed_formats only
+
+❌ DON'T forget to encode the URL when passing to proxy
+   → Use encodeURIComponent() always
+
+❌ DON'T use upload_preset with resource_type together
+   → They conflict - choose one or the other
+
+✅ DO use the proxy endpoint for all PDF viewing
+
+✅ DO keep uploads simple with minimal config
+
+✅ DO encode URLs when passing through query params
+
+✅ DO test with new uploads (old files may have different settings)
+
+================================================================================
+DEBUGGING TIPS
+================================================================================
+
+If PDFs download instead of displaying:
+1. Check backend logs - is proxy being called?
+2. Check browser console - what's the iframe src?
+3. Verify proxy endpoint returns 'Content-Disposition: inline'
+4. Test proxy URL directly in browser
+
+If you get 401/403 errors:
+1. Upload a NEW file (old files may have wrong permissions)
+2. Check Cloudinary console - is file marked as public?
+3. Verify backend has correct Cloudinary credentials
+
+If iframe is blank:
+1. Check browser console for CORS errors
+2. Verify proxy adds CORS headers
+3. Test direct Cloudinary URL in new tab
+
+================================================================================
+FILES MODIFIED FOR THIS SOLUTION
+================================================================================
+
+Backend:
+- lms-app/backend/routes/qualification.js (upload config)
+- lms-app/backend/routes/cpd.js (upload config)
+- lms-app/backend/routes/admin.js (proxy endpoint)
+
+Frontend:
+- lms-app/app/dashboard/admin/qualification/[courseId]/view/page.tsx
+- lms-app/app/dashboard/admin/qualification/units/[unitId]/view/page.tsx
+
+================================================================================
+END OF DOCUMENTATION
+================================================================================
+
+Last Updated: January 18, 2025
+Method: Backend Proxy + Simple Upload + Frontend Modal
+Status: ✅ WORKING - Tested and Confirmed
+

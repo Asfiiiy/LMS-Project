@@ -1,0 +1,939 @@
+6|lms-fron | [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+6|lms-fron | Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+6|lms-fron |     at ignore-listed frames
+6|lms-fron | [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+6|lms-fron | Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+6|lms-fron |     at ignore-listed frames
+6|lms-fron | [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+6|lms-fron | Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+6|lms-fron |     at ignore-listed frames
+6|lms-fron | [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+6|lms-fron | Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+6|lms-fron |     at ignore-listed frames
+6|lms-fron | [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+6|lms-fron | [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+6|lms-fron | [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+6|lms-fron | [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+--
+4|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+4|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+4|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+4|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+4|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+4|lms-serv | [Qualification Courses] Query error: Error: Unknown column 'up.undefined' in 'field list'
+4|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+4|lms-serv |     at /var/www/lms-app/backend/routes/student.js:815:39
+4|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+4|lms-serv |   code: 'ER_BAD_FIELD_ERROR',
+4|lms-serv |   errno: 1054,
+4|lms-serv |   sql: 'SELECT \n' +
+4|lms-serv |     '          u.id as unit_id,\n' +
+4|lms-serv |     '          u.course_id,\n' +
+4|lms-serv |     '          u.title as unit_title,\n' +
+--
+4|lms-serv |         LEFT JOIN student_topic_deadlines std
+4|lms-serv |           ON std.topic_id = u.id AND std.student_id = ? AND std.course_id = u.course_id AND std.topic_type = 'qualification_unit'
+4|lms-serv |         WHERE u.course_id IN (?)
+4|lms-serv |         ORDER BY u.course_id, u.order_index
+4|lms-serv | [Qualification Courses] Params: [ '15', '15', 75 ]
+4|lms-serv | [Qualification Courses] Error fetching student Qualification courses: Error: Unknown column 'up.undefined' in 'field list'
+4|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+4|lms-serv |     at /var/www/lms-app/backend/routes/student.js:815:39
+4|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+4|lms-serv |   code: 'ER_BAD_FIELD_ERROR',
+4|lms-serv |   errno: 1054,
+4|lms-serv |   sql: 'SELECT \n' +
+4|lms-serv |     '          u.id as unit_id,\n' +
+4|lms-serv |     '          u.course_id,\n' +
+4|lms-serv |     '          u.title as unit_title,\n' +
+--
+4|lms-serv |     '        WHERE u.course_id IN (?)\n' +
+4|lms-serv |     '        ORDER BY u.course_id, u.order_index',
+4|lms-serv |   sqlState: '42S22',
+4|lms-serv |   sqlMessage: "Unknown column 'up.undefined' in 'field list'"
+4|lms-serv | }
+4|lms-serv | [Qualification Courses] Error details: {
+4|lms-serv |   message: "Unknown column 'up.undefined' in 'field list'",
+4|lms-serv |   stack: "Error: Unknown column 'up.undefined' in 'field list'\n" +
+4|lms-serv |     '    at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)\n' +
+4|lms-serv |     '    at /var/www/lms-app/backend/routes/student.js:815:39\n' +
+4|lms-serv |     '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)',
+4|lms-serv |   code: 'ER_BAD_FIELD_ERROR',
+4|lms-serv |   sqlState: '42S22',
+4|lms-serv |   sqlMessage: "Unknown column 'up.undefined' in 'field list'",
+4|lms-serv |   errno: 1054
+4|lms-serv | }
+
+--
+1|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+1|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+1|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+1|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+1|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+1|lms-serv | Login error: Error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+1|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+1|lms-serv |     at /var/www/lms-app/backend/routes/auth.js:23:31
+1|lms-serv |     at Layer.handleRequest (/var/www/lms-app/backend/node_modules/router/lib/layer.js:152:17)
+1|lms-serv |     at next (/var/www/lms-app/backend/node_modules/router/lib/route.js:157:13)
+1|lms-serv |     at Route.dispatch (/var/www/lms-app/backend/node_modules/router/lib/route.js:117:3)
+1|lms-serv |     at handle (/var/www/lms-app/backend/node_modules/router/index.js:435:11)
+1|lms-serv |     at Layer.handleRequest (/var/www/lms-app/backend/node_modules/router/lib/layer.js:152:17)
+1|lms-serv |     at /var/www/lms-app/backend/node_modules/router/index.js:295:15
+1|lms-serv |     at processParams (/var/www/lms-app/backend/node_modules/router/index.js:582:12)
+1|lms-serv |     at next (/var/www/lms-app/backend/node_modules/router/index.js:291:5) {
+1|lms-serv |   code: 'ER_ACCESS_DENIED_ERROR',
+1|lms-serv |   errno: 1045,
+1|lms-serv |   sql: undefined,
+1|lms-serv |   sqlState: '28000',
+1|lms-serv |   sqlMessage: "Access denied for user 'lms_user'@'localhost' (using password: YES)"
+1|lms-serv | }
+--
+1|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+1|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+1|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+1|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+1|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+1|lms-serv | [Notifications] Error fetching notifications: Error: Incorrect arguments to mysqld_stmt_execute
+1|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+1|lms-serv |     at /var/www/lms-app/backend/routes/notifications.js:68:40
+1|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+1|lms-serv |   code: 'ER_WRONG_ARGUMENTS',
+1|lms-serv |   errno: 1210,
+--
+1|lms-serv |     '      ORDER BY n.created_at DESC\n' +
+1|lms-serv |     '      LIMIT ? OFFSET ?',
+1|lms-serv |   sqlState: 'HY000',
+1|lms-serv |   sqlMessage: 'Incorrect arguments to mysqld_stmt_execute'
+1|lms-serv | }
+1|lms-serv | [Notifications] Error fetching notifications: Error: Incorrect arguments to mysqld_stmt_execute
+1|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+1|lms-serv |     at /var/www/lms-app/backend/routes/notifications.js:68:40
+1|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+1|lms-serv |   code: 'ER_WRONG_ARGUMENTS',
+1|lms-serv |   errno: 1210,
+--
+1|lms-serv |     '      ORDER BY n.created_at DESC\n' +
+1|lms-serv |     '      LIMIT ? OFFSET ?',
+1|lms-serv |   sqlState: 'HY000',
+1|lms-serv |   sqlMessage: 'Incorrect arguments to mysqld_stmt_execute'
+1|lms-serv | }
+1|lms-serv | [Notifications] Error fetching notifications: Error: Incorrect arguments to mysqld_stmt_execute
+1|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+1|lms-serv |     at /var/www/lms-app/backend/routes/notifications.js:68:40
+1|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+1|lms-serv |   code: 'ER_WRONG_ARGUMENTS',
+1|lms-serv |   errno: 1210,
+--
+1|lms-serv |     '      ORDER BY n.created_at DESC\n' +
+1|lms-serv |     '      LIMIT ? OFFSET ?',
+1|lms-serv |   sqlState: 'HY000',
+1|lms-serv |   sqlMessage: 'Incorrect arguments to mysqld_stmt_execute'
+1|lms-serv | }
+1|lms-serv | [Notifications] Error fetching notifications: Error: Incorrect arguments to mysqld_stmt_execute
+1|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+1|lms-serv |     at /var/www/lms-app/backend/routes/notifications.js:68:40
+1|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+1|lms-serv |   code: 'ER_WRONG_ARGUMENTS',
+1|lms-serv |   errno: 1210,
+--
+0|lms-serv |    Path: /usr/bin/soffice
+0|lms-serv |    Available: ✅ YES
+0|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+0|lms-serv | {"level":30,"time":1766501052046,"pid":62193,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+0|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+0|lms-serv | ✅ Server running on port 5000 with Socket.IO
+0|lms-serv | ⚠️ Server continues running.
+0|lms-serv | ✅ Redis connected (Upstash)
+0|lms-serv | ✅ Redis ping successful: PONG
+0|lms-serv | {"level":50,"time":1766501193944,"pid":62193,"hostname":"srv1213809","error":"Access denied for user 'lms_user'@'localhost' (using password: YES)","stack":"Error: Access denied for user 'lms_user'@'localhost' (using password: YES)\n    at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)\n    at logSystemEvent (/var/www/lms-app/backend/utils/eventLogger.js:305:16)\n    at Immediate.<anonymous> (/var/www/lms-app/backend/middleware/activityLogger.js:571:13)\n    at process.processImmediate (node:internal/timers:483:21)","msg":"[EventLogger] Failed to write system log"}
+0|lms-serv | {"level":30,"time":1766501193944,"pid":62193,"hostname":"srv1213809","user_id":null,"role":null,"action":"Logged In","endpoint":"/api/login","method":"POST","ip":"103.57.224.243","msg":"[ACTIVITY]"}
+0|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+0|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+0|lms-serv | [Cloudinary] Configuration loaded for cloud: dlbgdbmnt
+0|lms-serv | ✅ LibreOffice found at: /usr/bin/soffice
+--
+0|lms-serv |    Path: /usr/bin/soffice
+0|lms-serv |    Available: ✅ YES
+0|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+0|lms-serv | {"level":30,"time":1766501245204,"pid":62482,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+0|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+0|lms-serv | ✅ Server running on port 5000 with Socket.IO
+0|lms-serv | ⚠️ Server continues running.
+0|lms-serv | ✅ Redis connected (Upstash)
+0|lms-serv | ✅ Redis ping successful: PONG
+0|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+0|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+--
+0|lms-serv |    Path: /usr/bin/soffice
+0|lms-serv |    Available: ✅ YES
+0|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+0|lms-serv | {"level":30,"time":1766501305444,"pid":62734,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+0|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+0|lms-serv | ✅ Server running on port 5000 with Socket.IO
+0|lms-serv | ⚠️ Server continues running.
+0|lms-serv | ✅ Redis connected (Upstash)
+0|lms-serv | ✅ Redis ping successful: PONG
+0|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ⚙️  override existing env vars with { override: true }
+0|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+--
+0|lms-serv |    Path: /usr/bin/soffice
+0|lms-serv |    Available: ✅ YES
+0|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+0|lms-serv | {"level":30,"time":1766501420143,"pid":62989,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+0|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+0|lms-serv | ✅ Server running on port 5000 with Socket.IO
+0|lms-serv | ⚠️ Server continues running.
+0|lms-serv | ✅ Redis connected (Upstash)
+0|lms-serv | ✅ Redis ping successful: PONG
+0|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+0|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+--
+0|lms-serv |    Path: /usr/bin/soffice
+0|lms-serv |    Available: ✅ YES
+0|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+0|lms-serv | {"level":30,"time":1766501602400,"pid":63250,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+0|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+0|lms-serv | ✅ Server running on port 5000 with Socket.IO
+0|lms-serv | ⚠️ Server continues running.
+0|lms-serv | ✅ Redis connected (Upstash)
+0|lms-serv | ✅ Redis ping successful: PONG
+0|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+0|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+--
+0|lms-serv |    Path: /usr/bin/soffice
+0|lms-serv |    Available: ✅ YES
+0|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+0|lms-serv | {"level":30,"time":1766501707041,"pid":63503,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+0|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+0|lms-serv | ✅ Server running on port 5000 with Socket.IO
+0|lms-serv | ⚠️ Server continues running.
+0|lms-serv | ✅ Redis connected (Upstash)
+0|lms-serv | ✅ Redis ping successful: PONG
+0|lms-serv | {"level":50,"time":1766501747745,"pid":63503,"hostname":"srv1213809","error":"Access denied for user 'lms_user'@'localhost' (using password: YES)","stack":"Error: Access denied for user 'lms_user'@'localhost' (using password: YES)\n    at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)\n    at logSystemEvent (/var/www/lms-app/backend/utils/eventLogger.js:305:16)\n    at Immediate.<anonymous> (/var/www/lms-app/backend/middleware/activityLogger.js:571:13)\n    at process.processImmediate (node:internal/timers:483:21)","msg":"[EventLogger] Failed to write system log"}
+0|lms-serv | {"level":30,"time":1766501747745,"pid":63503,"hostname":"srv1213809","user_id":null,"role":null,"action":"Logged In","endpoint":"/api/login","method":"POST","ip":"223.123.127.149","msg":"[ACTIVITY]"}
+0|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+0|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+0|lms-serv | [Cloudinary] Configuration loaded for cloud: dlbgdbmnt
+0|lms-serv | ✅ LibreOffice found at: /usr/bin/soffice
+--
+0|lms-serv |    Path: /usr/bin/soffice
+0|lms-serv |    Available: ✅ YES
+0|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+0|lms-serv | {"level":30,"time":1766501846162,"pid":63790,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+0|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+0|lms-serv | ✅ Server running on port 5000 with Socket.IO
+0|lms-serv | ⚠️ Server continues running.
+0|lms-serv | ✅ Redis connected (Upstash)
+0|lms-serv | ✅ Redis ping successful: PONG
+0|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+0|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+--
+0|lms-serv |    Path: /usr/bin/soffice
+0|lms-serv |    Available: ✅ YES
+0|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+0|lms-serv | {"level":30,"time":1766501930711,"pid":64020,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+0|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+0|lms-serv | ✅ Server running on port 5000 with Socket.IO
+0|lms-serv | ⚠️ Server continues running.
+0|lms-serv | ✅ Redis connected (Upstash)
+0|lms-serv | ✅ Redis ping successful: PONG
+0|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+0|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+--
+0|lms-serv |    Path: /usr/bin/soffice
+0|lms-serv |    Available: ✅ YES
+0|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+0|lms-serv | {"level":30,"time":1766501979027,"pid":64216,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+0|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+0|lms-serv | ✅ Server running on port 5000 with Socket.IO
+0|lms-serv | ✅ MySQL connected successfully!
+0|lms-serv | ✅ Redis connected (Upstash)
+0|lms-serv | ✅ Redis ping successful: PONG
+0|lms-serv | {"level":30,"time":1766502201138,"pid":64216,"hostname":"srv1213809","event":"system_log","user_id":null,"role":null,"action":"Logged In","endpoint":"/api/login","method":"POST","msg":"POST /api/login"}
+0|lms-serv | {"level":30,"time":1766502201138,"pid":64216,"hostname":"srv1213809","user_id":null,"role":null,"action":"Logged In","endpoint":"/api/login","method":"POST","ip":"223.123.127.149","msg":"[ACTIVITY]"}
+--
+
+/root/.pm2/logs/lms-server-error-0.log last 200 lines:
+0|lms-serv |     at /var/www/lms-app/backend/node_modules/router/index.js:295:15
+0|lms-serv |     at processParams (/var/www/lms-app/backend/node_modules/router/index.js:582:12)
+0|lms-serv |     at next (/var/www/lms-app/backend/node_modules/router/index.js:291:5) {
+0|lms-serv |   code: 'ER_ACCESS_DENIED_ERROR',
+0|lms-serv |   errno: 1045,
+0|lms-serv |   sql: undefined,
+0|lms-serv |   sqlState: '28000',
+0|lms-serv |   sqlMessage: "Access denied for user 'lms_user'@'localhost' (using password: YES)"
+0|lms-serv | }
+--
+0|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+0|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+0|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+0|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+0|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+0|lms-serv | Login error: Error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+0|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+0|lms-serv |     at /var/www/lms-app/backend/routes/auth.js:23:31
+0|lms-serv |     at Layer.handleRequest (/var/www/lms-app/backend/node_modules/router/lib/layer.js:152:17)
+0|lms-serv |     at next (/var/www/lms-app/backend/node_modules/router/lib/route.js:157:13)
+0|lms-serv |     at Route.dispatch (/var/www/lms-app/backend/node_modules/router/lib/route.js:117:3)
+0|lms-serv |     at handle (/var/www/lms-app/backend/node_modules/router/index.js:435:11)
+0|lms-serv |     at Layer.handleRequest (/var/www/lms-app/backend/node_modules/router/lib/layer.js:152:17)
+0|lms-serv |     at /var/www/lms-app/backend/node_modules/router/index.js:295:15
+0|lms-serv |     at processParams (/var/www/lms-app/backend/node_modules/router/index.js:582:12)
+0|lms-serv |     at next (/var/www/lms-app/backend/node_modules/router/index.js:291:5) {
+0|lms-serv |   code: 'ER_ACCESS_DENIED_ERROR',
+0|lms-serv |   errno: 1045,
+0|lms-serv |   sql: undefined,
+0|lms-serv |   sqlState: '28000',
+0|lms-serv |   sqlMessage: "Access denied for user 'lms_user'@'localhost' (using password: YES)"
+0|lms-serv | }
+--
+0|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+0|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+0|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+0|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+0|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+0|lms-serv | Login error: Error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+0|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+0|lms-serv |     at /var/www/lms-app/backend/routes/auth.js:23:31
+0|lms-serv |     at Layer.handleRequest (/var/www/lms-app/backend/node_modules/router/lib/layer.js:152:17)
+0|lms-serv |     at next (/var/www/lms-app/backend/node_modules/router/lib/route.js:157:13)
+0|lms-serv |     at Route.dispatch (/var/www/lms-app/backend/node_modules/router/lib/route.js:117:3)
+0|lms-serv |     at handle (/var/www/lms-app/backend/node_modules/router/index.js:435:11)
+0|lms-serv |     at Layer.handleRequest (/var/www/lms-app/backend/node_modules/router/lib/layer.js:152:17)
+0|lms-serv |     at /var/www/lms-app/backend/node_modules/router/index.js:295:15
+0|lms-serv |     at processParams (/var/www/lms-app/backend/node_modules/router/index.js:582:12)
+0|lms-serv |     at next (/var/www/lms-app/backend/node_modules/router/index.js:291:5) {
+0|lms-serv |   code: 'ER_ACCESS_DENIED_ERROR',
+0|lms-serv |   errno: 1045,
+0|lms-serv |   sql: undefined,
+0|lms-serv |   sqlState: '28000',
+0|lms-serv |   sqlMessage: "Access denied for user 'lms_user'@'localhost' (using password: YES)"
+0|lms-serv | }
+0|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+0|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+0|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+0|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+0|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+0|lms-serv | [Notifications] Error fetching notifications: Error: Incorrect arguments to mysqld_stmt_execute
+0|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+0|lms-serv |     at /var/www/lms-app/backend/routes/notifications.js:68:40
+0|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+0|lms-serv |   code: 'ER_WRONG_ARGUMENTS',
+0|lms-serv |   errno: 1210,
+--
+0|lms-serv |     '      ORDER BY n.created_at DESC\n' +
+0|lms-serv |     '      LIMIT ? OFFSET ?',
+0|lms-serv |   sqlState: 'HY000',
+0|lms-serv |   sqlMessage: 'Incorrect arguments to mysqld_stmt_execute'
+0|lms-serv | }
+0|lms-serv | [Notifications] Error fetching notifications: Error: Incorrect arguments to mysqld_stmt_execute
+0|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+0|lms-serv |     at /var/www/lms-app/backend/routes/notifications.js:68:40
+0|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+0|lms-serv |   code: 'ER_WRONG_ARGUMENTS',
+0|lms-serv |   errno: 1210,
+--
+0|lms-serv |     '      ORDER BY n.created_at DESC\n' +
+0|lms-serv |     '      LIMIT ? OFFSET ?',
+0|lms-serv |   sqlState: 'HY000',
+0|lms-serv |   sqlMessage: 'Incorrect arguments to mysqld_stmt_execute'
+0|lms-serv | }
+0|lms-serv | Error fetching users: Error: Incorrect arguments to mysqld_stmt_execute
+0|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+0|lms-serv |     at /var/www/lms-app/backend/routes/admin.js:143:31
+0|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+0|lms-serv |   code: 'ER_WRONG_ARGUMENTS',
+0|lms-serv |   errno: 1210,
+--
+0|lms-serv |     '      LIMIT ? OFFSET ?\n' +
+0|lms-serv |     '    ',
+0|lms-serv |   sqlState: 'HY000',
+0|lms-serv |   sqlMessage: 'Incorrect arguments to mysqld_stmt_execute'
+0|lms-serv | }
+0|lms-serv | [Qualification Courses] Query error: Error: Unknown column 'up.undefined' in 'field list'
+0|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+0|lms-serv |     at /var/www/lms-app/backend/routes/student.js:815:39
+0|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+0|lms-serv |   code: 'ER_BAD_FIELD_ERROR',
+0|lms-serv |   errno: 1054,
+0|lms-serv |   sql: 'SELECT \n' +
+0|lms-serv |     '          u.id as unit_id,\n' +
+0|lms-serv |     '          u.course_id,\n' +
+0|lms-serv |     '          u.title as unit_title,\n' +
+--
+0|lms-serv |         LEFT JOIN student_topic_deadlines std
+0|lms-serv |           ON std.topic_id = u.id AND std.student_id = ? AND std.course_id = u.course_id AND std.topic_type = 'qualification_unit'
+0|lms-serv |         WHERE u.course_id IN (?)
+0|lms-serv |         ORDER BY u.course_id, u.order_index
+0|lms-serv | [Qualification Courses] Params: [ '15', '15', 75 ]
+0|lms-serv | [Qualification Courses] Error fetching student Qualification courses: Error: Unknown column 'up.undefined' in 'field list'
+0|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+0|lms-serv |     at /var/www/lms-app/backend/routes/student.js:815:39
+0|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+0|lms-serv |   code: 'ER_BAD_FIELD_ERROR',
+0|lms-serv |   errno: 1054,
+0|lms-serv |   sql: 'SELECT \n' +
+0|lms-serv |     '          u.id as unit_id,\n' +
+0|lms-serv |     '          u.course_id,\n' +
+0|lms-serv |     '          u.title as unit_title,\n' +
+--
+0|lms-serv |     '        WHERE u.course_id IN (?)\n' +
+0|lms-serv |     '        ORDER BY u.course_id, u.order_index',
+0|lms-serv |   sqlState: '42S22',
+0|lms-serv |   sqlMessage: "Unknown column 'up.undefined' in 'field list'"
+0|lms-serv | }
+0|lms-serv | [Qualification Courses] Error details: {
+0|lms-serv |   message: "Unknown column 'up.undefined' in 'field list'",
+0|lms-serv |   stack: "Error: Unknown column 'up.undefined' in 'field list'\n" +
+0|lms-serv |     '    at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)\n' +
+0|lms-serv |     '    at /var/www/lms-app/backend/routes/student.js:815:39\n' +
+0|lms-serv |     '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)',
+0|lms-serv |   code: 'ER_BAD_FIELD_ERROR',
+0|lms-serv |   sqlState: '42S22',
+0|lms-serv |   sqlMessage: "Unknown column 'up.undefined' in 'field list'",
+0|lms-serv |   errno: 1054
+0|lms-serv | }
+
+--
+2|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+2|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+2|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+2|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+2|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+2|lms-serv | Error fetching users: Error: Incorrect arguments to mysqld_stmt_execute
+2|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+2|lms-serv |     at /var/www/lms-app/backend/routes/admin.js:143:31
+2|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+2|lms-serv |   code: 'ER_WRONG_ARGUMENTS',
+2|lms-serv |   errno: 1210,
+--
+2|lms-serv |     '      LIMIT ? OFFSET ?\n' +
+2|lms-serv |     '    ',
+2|lms-serv |   sqlState: 'HY000',
+2|lms-serv |   sqlMessage: 'Incorrect arguments to mysqld_stmt_execute'
+2|lms-serv | }
+2|lms-serv | [Notifications] Error fetching notifications: Error: Incorrect arguments to mysqld_stmt_execute
+2|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+2|lms-serv |     at /var/www/lms-app/backend/routes/notifications.js:68:40
+2|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+2|lms-serv |   code: 'ER_WRONG_ARGUMENTS',
+2|lms-serv |   errno: 1210,
+--
+2|lms-serv |     '      ORDER BY n.created_at DESC\n' +
+2|lms-serv |     '      LIMIT ? OFFSET ?',
+2|lms-serv |   sqlState: 'HY000',
+2|lms-serv |   sqlMessage: 'Incorrect arguments to mysqld_stmt_execute'
+2|lms-serv | }
+2|lms-serv | [Notifications] Error fetching notifications: Error: Incorrect arguments to mysqld_stmt_execute
+2|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+2|lms-serv |     at /var/www/lms-app/backend/routes/notifications.js:68:40
+2|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+2|lms-serv |   code: 'ER_WRONG_ARGUMENTS',
+2|lms-serv |   errno: 1210,
+--
+2|lms-serv | 📄 LibreOffice Configuration:
+2|lms-serv |    Platform: linux
+2|lms-serv |    Path: /usr/bin/soffice
+2|lms-serv |    Available: ✅ YES
+2|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+2|lms-serv | {"level":30,"time":1766500870145,"pid":61955,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+2|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+2|lms-serv | ✅ Server running on port 5000 with Socket.IO
+2|lms-serv | ⚠️ Server continues running.
+2|lms-serv | ✅ Redis connected (Upstash)
+2|lms-serv | ✅ Redis ping successful: PONG
+2|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+2|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+--
+2|lms-serv |    Path: /usr/bin/soffice
+2|lms-serv |    Available: ✅ YES
+2|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+2|lms-serv | {"level":30,"time":1766501052210,"pid":62217,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+2|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+2|lms-serv | ✅ Server running on port 5000 with Socket.IO
+2|lms-serv | ✅ Redis connected (Upstash)
+2|lms-serv | ⚠️ Server continues running.
+2|lms-serv | ✅ Redis ping successful: PONG
+2|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+2|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+--
+2|lms-serv |    Path: /usr/bin/soffice
+2|lms-serv |    Available: ✅ YES
+2|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+2|lms-serv | {"level":30,"time":1766501245405,"pid":62506,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+2|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+2|lms-serv | ✅ Server running on port 5000 with Socket.IO
+2|lms-serv | ⚠️ Server continues running.
+2|lms-serv | ✅ Redis connected (Upstash)
+2|lms-serv | ✅ Redis ping successful: PONG
+2|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+2|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+--
+2|lms-serv |    Path: /usr/bin/soffice
+2|lms-serv |    Available: ✅ YES
+2|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+2|lms-serv | {"level":30,"time":1766501305552,"pid":62758,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+2|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+2|lms-serv | ✅ Server running on port 5000 with Socket.IO
+2|lms-serv | ⚠️ Server continues running.
+2|lms-serv | ✅ Redis connected (Upstash)
+2|lms-serv | ✅ Redis ping successful: PONG
+2|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+2|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+--
+2|lms-serv |    Path: /usr/bin/soffice
+2|lms-serv |    Available: ✅ YES
+2|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+2|lms-serv | {"level":30,"time":1766501420274,"pid":63013,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+2|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+2|lms-serv | ✅ Server running on port 5000 with Socket.IO
+2|lms-serv | ⚠️ Server continues running.
+2|lms-serv | ✅ Redis connected (Upstash)
+2|lms-serv | ✅ Redis ping successful: PONG
+2|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+2|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+--
+2|lms-serv |    Path: /usr/bin/soffice
+2|lms-serv |    Available: ✅ YES
+2|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+2|lms-serv | {"level":30,"time":1766501602534,"pid":63274,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+2|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+2|lms-serv | ✅ Server running on port 5000 with Socket.IO
+2|lms-serv | ⚠️ Server continues running.
+2|lms-serv | ✅ Redis connected (Upstash)
+2|lms-serv | ✅ Redis ping successful: PONG
+2|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+2|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+--
+2|lms-serv |    Path: /usr/bin/soffice
+2|lms-serv |    Available: ✅ YES
+2|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+2|lms-serv | {"level":30,"time":1766501707241,"pid":63527,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+2|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+2|lms-serv | ✅ Server running on port 5000 with Socket.IO
+2|lms-serv | ⚠️ Server continues running.
+2|lms-serv | ✅ Redis connected (Upstash)
+2|lms-serv | ✅ Redis ping successful: PONG
+2|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+2|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+--
+2|lms-serv |    Path: /usr/bin/soffice
+2|lms-serv |    Available: ✅ YES
+2|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+2|lms-serv | {"level":30,"time":1766501846220,"pid":63804,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+2|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+2|lms-serv | ✅ Server running on port 5000 with Socket.IO
+2|lms-serv | ⚠️ Server continues running.
+2|lms-serv | ✅ Redis connected (Upstash)
+2|lms-serv | ✅ Redis ping successful: PONG
+2|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+2|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+--
+2|lms-serv |    Path: /usr/bin/soffice
+2|lms-serv |    Available: ✅ YES
+2|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+2|lms-serv | {"level":30,"time":1766501930866,"pid":64044,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+2|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+2|lms-serv | ✅ Server running on port 5000 with Socket.IO
+2|lms-serv | ⚠️ Server continues running.
+2|lms-serv | ✅ Redis connected (Upstash)
+2|lms-serv | ✅ Redis ping successful: PONG
+2|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+2|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+--
+2|lms-serv |    Path: /usr/bin/soffice
+2|lms-serv |    Available: ✅ YES
+2|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+2|lms-serv | {"level":30,"time":1766501979184,"pid":64240,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+2|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+2|lms-serv | ✅ Server running on port 5000 with Socket.IO
+2|lms-serv | ✅ MySQL connected successfully!
+2|lms-serv | ✅ Redis connected (Upstash)
+2|lms-serv | ✅ Redis ping successful: PONG
+2|lms-serv | 💾 Cache SET: cache:/api/admin/all-quiz-attempts:{} (120s)
+2|lms-serv | 💾 Cache SET: cache:/api/admin/users?page=1&limit=50:{"page":"1","limit":"50"} (30s)
+--
+3|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+3|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+3|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+3|lms-serv | ❌ MySQL connection error: Access denied for user 'lms_user'@'localhost' (using password: YES)
+3|lms-serv | Ignoring invalid configuration option passed to Connection: acquireTimeout. This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+3|lms-serv | [Notifications] Error fetching notifications: Error: Incorrect arguments to mysqld_stmt_execute
+3|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+3|lms-serv |     at /var/www/lms-app/backend/routes/notifications.js:68:40
+3|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+3|lms-serv |   code: 'ER_WRONG_ARGUMENTS',
+3|lms-serv |   errno: 1210,
+--
+3|lms-serv |     '      ORDER BY n.created_at DESC\n' +
+3|lms-serv |     '      LIMIT ? OFFSET ?',
+3|lms-serv |   sqlState: 'HY000',
+3|lms-serv |   sqlMessage: 'Incorrect arguments to mysqld_stmt_execute'
+3|lms-serv | }
+3|lms-serv | [Notifications] Error fetching notifications: Error: Incorrect arguments to mysqld_stmt_execute
+3|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+3|lms-serv |     at /var/www/lms-app/backend/routes/notifications.js:68:40
+3|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+3|lms-serv |   code: 'ER_WRONG_ARGUMENTS',
+3|lms-serv |   errno: 1210,
+--
+3|lms-serv |     '      ORDER BY n.created_at DESC\n' +
+3|lms-serv |     '      LIMIT ? OFFSET ?',
+3|lms-serv |   sqlState: 'HY000',
+3|lms-serv |   sqlMessage: 'Incorrect arguments to mysqld_stmt_execute'
+3|lms-serv | }
+3|lms-serv | Error fetching users: Error: Incorrect arguments to mysqld_stmt_execute
+3|lms-serv |     at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)
+3|lms-serv |     at /var/www/lms-app/backend/routes/admin.js:143:31
+3|lms-serv |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+3|lms-serv |   code: 'ER_WRONG_ARGUMENTS',
+3|lms-serv |   errno: 1210,
+--
+3|lms-serv |   sqlState: 'HY000',
+3|lms-serv |   sqlMessage: 'Incorrect arguments to mysqld_stmt_execute'
+3|lms-serv | }
+
+/root/.pm2/logs/lms-server-out-3.log last 200 lines:
+3|lms-serv | ✅ Server running on port 5000 with Socket.IO
+3|lms-serv | ⚠️ Server continues running.
+3|lms-serv | ✅ Redis connected (Upstash)
+3|lms-serv | ✅ Redis ping successful: PONG
+3|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+3|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+--
+3|lms-serv |    Path: /usr/bin/soffice
+3|lms-serv |    Available: ✅ YES
+3|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+3|lms-serv | {"level":30,"time":1766501052197,"pid":62218,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+3|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+3|lms-serv | ✅ Server running on port 5000 with Socket.IO
+3|lms-serv | ⚠️ Server continues running.
+3|lms-serv | ✅ Redis connected (Upstash)
+3|lms-serv | ✅ Redis ping successful: PONG
+3|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+3|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+--
+3|lms-serv |    Path: /usr/bin/soffice
+3|lms-serv |    Available: ✅ YES
+3|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+3|lms-serv | {"level":30,"time":1766501245376,"pid":62507,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+3|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+3|lms-serv | ✅ Server running on port 5000 with Socket.IO
+3|lms-serv | ⚠️ Server continues running.
+3|lms-serv | ✅ Redis connected (Upstash)
+3|lms-serv | ✅ Redis ping successful: PONG
+3|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+3|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+--
+3|lms-serv |    Path: /usr/bin/soffice
+3|lms-serv |    Available: ✅ YES
+3|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+3|lms-serv | {"level":30,"time":1766501305562,"pid":62759,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+3|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+3|lms-serv | ✅ Server running on port 5000 with Socket.IO
+3|lms-serv | ⚠️ Server continues running.
+3|lms-serv | ✅ Redis connected (Upstash)
+3|lms-serv | ✅ Redis ping successful: PONG
+3|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+3|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+--
+3|lms-serv |    Path: /usr/bin/soffice
+3|lms-serv |    Available: ✅ YES
+3|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+3|lms-serv | {"level":30,"time":1766501420286,"pid":63014,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+3|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+3|lms-serv | ✅ Server running on port 5000 with Socket.IO
+3|lms-serv | ⚠️ Server continues running.
+3|lms-serv | ✅ Redis connected (Upstash)
+3|lms-serv | ✅ Redis ping successful: PONG
+3|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+3|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+--
+3|lms-serv |    Path: /usr/bin/soffice
+3|lms-serv |    Available: ✅ YES
+3|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+3|lms-serv | {"level":30,"time":1766501602546,"pid":63275,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+3|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+3|lms-serv | ✅ Server running on port 5000 with Socket.IO
+3|lms-serv | ⚠️ Server continues running.
+3|lms-serv | ✅ Redis connected (Upstash)
+3|lms-serv | ✅ Redis ping successful: PONG
+3|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+3|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+--
+3|lms-serv |    Path: /usr/bin/soffice
+3|lms-serv |    Available: ✅ YES
+3|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+3|lms-serv | {"level":30,"time":1766501707204,"pid":63528,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+3|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+3|lms-serv | ✅ Server running on port 5000 with Socket.IO
+3|lms-serv | ⚠️ Server continues running.
+3|lms-serv | ✅ Redis connected (Upstash)
+3|lms-serv | ✅ Redis ping successful: PONG
+3|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+3|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+--
+3|lms-serv |    Path: /usr/bin/soffice
+3|lms-serv |    Available: ✅ YES
+3|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+3|lms-serv | {"level":30,"time":1766501846235,"pid":63811,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+3|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+3|lms-serv | ✅ Server running on port 5000 with Socket.IO
+3|lms-serv | ⚠️ Server continues running.
+3|lms-serv | ✅ Redis connected (Upstash)
+3|lms-serv | ✅ Redis ping successful: PONG
+3|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+3|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+--
+3|lms-serv |    Path: /usr/bin/soffice
+3|lms-serv |    Available: ✅ YES
+3|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+3|lms-serv | {"level":30,"time":1766501930870,"pid":64050,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+3|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+3|lms-serv | ✅ Server running on port 5000 with Socket.IO
+3|lms-serv | ⚠️ Server continues running.
+3|lms-serv | ✅ Redis connected (Upstash)
+3|lms-serv | ✅ Redis ping successful: PONG
+3|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+3|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+--
+3|lms-serv |    Path: /usr/bin/soffice
+3|lms-serv |    Available: ✅ YES
+3|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+3|lms-serv | {"level":30,"time":1766501979175,"pid":64241,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+3|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+3|lms-serv | ✅ Server running on port 5000 with Socket.IO
+3|lms-serv | ✅ MySQL connected successfully!
+3|lms-serv | ✅ Redis connected (Upstash)
+3|lms-serv | ✅ Redis ping successful: PONG
+3|lms-serv | ✅ Token refreshed for user: Alice Admin (Admin)
+3|lms-serv | {"level":30,"time":1766502077146,"pid":64241,"hostname":"srv1213809","event":"system_log","user_id":1,"role":"admin","action":"Logged In Login Refresh","endpoint":"/api/login/refresh","method":"POST","msg":"Admin POST /api/login/refresh"}
+--
+1|lms-serv |    Path: /usr/bin/soffice
+1|lms-serv |    Available: ✅ YES
+1|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+1|lms-serv | {"level":30,"time":1766501052050,"pid":62194,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+1|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+1|lms-serv | ✅ Server running on port 5000 with Socket.IO
+1|lms-serv | ⚠️ Server continues running.
+1|lms-serv | ✅ Redis connected (Upstash)
+1|lms-serv | ✅ Redis ping successful: PONG
+1|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+1|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+--
+1|lms-serv |    Path: /usr/bin/soffice
+1|lms-serv |    Available: ✅ YES
+1|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+1|lms-serv | {"level":30,"time":1766501245241,"pid":62483,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+1|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+1|lms-serv | ✅ Server running on port 5000 with Socket.IO
+1|lms-serv | ⚠️ Server continues running.
+1|lms-serv | ✅ Redis connected (Upstash)
+1|lms-serv | ✅ Redis ping successful: PONG
+1|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+1|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+--
+1|lms-serv |    Path: /usr/bin/soffice
+1|lms-serv |    Available: ✅ YES
+1|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+1|lms-serv | {"level":30,"time":1766501305417,"pid":62735,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+1|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+1|lms-serv | ✅ Server running on port 5000 with Socket.IO
+1|lms-serv | ⚠️ Server continues running.
+1|lms-serv | ✅ Redis connected (Upstash)
+1|lms-serv | ✅ Redis ping successful: PONG
+1|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+1|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+--
+1|lms-serv |    Path: /usr/bin/soffice
+1|lms-serv |    Available: ✅ YES
+1|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+1|lms-serv | {"level":30,"time":1766501420121,"pid":62990,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+1|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+1|lms-serv | ✅ Server running on port 5000 with Socket.IO
+1|lms-serv | ⚠️ Server continues running.
+1|lms-serv | ✅ Redis connected (Upstash)
+1|lms-serv | ✅ Redis ping successful: PONG
+1|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ⚙️  override existing env vars with { override: true }
+1|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+--
+1|lms-serv |    Path: /usr/bin/soffice
+1|lms-serv |    Available: ✅ YES
+1|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+1|lms-serv | {"level":30,"time":1766501602372,"pid":63251,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+1|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+1|lms-serv | ✅ Server running on port 5000 with Socket.IO
+1|lms-serv | ⚠️ Server continues running.
+1|lms-serv | ✅ Redis connected (Upstash)
+1|lms-serv | ✅ Redis ping successful: PONG
+1|lms-serv | {"level":50,"time":1766501627822,"pid":63251,"hostname":"srv1213809","error":"Access denied for user 'lms_user'@'localhost' (using password: YES)","stack":"Error: Access denied for user 'lms_user'@'localhost' (using password: YES)\n    at PromisePool.execute (/var/www/lms-app/backend/node_modules/mysql2/lib/promise/pool.js:54:22)\n    at logSystemEvent (/var/www/lms-app/backend/utils/eventLogger.js:305:16)\n    at Immediate.<anonymous> (/var/www/lms-app/backend/middleware/activityLogger.js:571:13)\n    at process.processImmediate (node:internal/timers:483:21)","msg":"[EventLogger] Failed to write system log"}
+1|lms-serv | {"level":30,"time":1766501627822,"pid":63251,"hostname":"srv1213809","user_id":null,"role":null,"action":"Logged In","endpoint":"/api/login","method":"POST","ip":"103.57.224.243","msg":"[ACTIVITY]"}
+1|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+1|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+1|lms-serv | [Cloudinary] Configuration loaded for cloud: dlbgdbmnt
+1|lms-serv | ✅ LibreOffice found at: /usr/bin/soffice
+--
+1|lms-serv |    Path: /usr/bin/soffice
+1|lms-serv |    Available: ✅ YES
+1|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+1|lms-serv | {"level":30,"time":1766501707050,"pid":63504,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+1|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+1|lms-serv | ✅ Server running on port 5000 with Socket.IO
+1|lms-serv | ⚠️ Server continues running.
+1|lms-serv | ✅ Redis connected (Upstash)
+1|lms-serv | ✅ Redis ping successful: PONG
+1|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+1|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+--
+1|lms-serv |    Path: /usr/bin/soffice
+1|lms-serv |    Available: ✅ YES
+1|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+1|lms-serv | {"level":30,"time":1766501846208,"pid":63797,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+1|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+1|lms-serv | ✅ Server running on port 5000 with Socket.IO
+1|lms-serv | ⚠️ Server continues running.
+1|lms-serv | ✅ Redis connected (Upstash)
+1|lms-serv | ✅ Redis ping successful: PONG
+1|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+1|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+--
+1|lms-serv |    Path: /usr/bin/soffice
+1|lms-serv |    Available: ✅ YES
+1|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+1|lms-serv | {"level":30,"time":1766501930692,"pid":64021,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+1|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+1|lms-serv | ✅ Server running on port 5000 with Socket.IO
+1|lms-serv | ⚠️ Server continues running.
+1|lms-serv | ✅ Redis connected (Upstash)
+1|lms-serv | ✅ Redis ping successful: PONG
+1|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+1|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+--
+1|lms-serv |    Path: /usr/bin/soffice
+1|lms-serv |    Available: ✅ YES
+1|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+1|lms-serv | {"level":30,"time":1766501979006,"pid":64217,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+1|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+1|lms-serv | ✅ Server running on port 5000 with Socket.IO
+1|lms-serv | ✅ MySQL connected successfully!
+1|lms-serv | ✅ Redis connected (Upstash)
+1|lms-serv | ✅ Redis ping successful: PONG
+1|lms-serv | {"level":30,"time":1766502073062,"pid":64217,"hostname":"srv1213809","event":"system_log","user_id":null,"role":null,"action":"Logged In","endpoint":"/api/login","method":"POST","msg":"POST /api/login"}
+1|lms-serv | {"level":30,"time":1766502073063,"pid":64217,"hostname":"srv1213809","user_id":null,"role":null,"action":"Logged In","endpoint":"/api/login","method":"POST","ip":"223.123.127.149","msg":"[ACTIVITY]"}
+--
+4|lms-serv |    Path: /usr/bin/soffice
+4|lms-serv |    Available: ✅ YES
+4|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+4|lms-serv | {"level":30,"time":1766501245563,"pid":62530,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+4|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+4|lms-serv | ✅ Server running on port 5000 with Socket.IO
+4|lms-serv | ⚠️ Server continues running.
+4|lms-serv | ✅ Redis connected (Upstash)
+4|lms-serv | ✅ Redis ping successful: PONG
+4|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+4|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+--
+4|lms-serv |    Path: /usr/bin/soffice
+4|lms-serv |    Available: ✅ YES
+4|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+4|lms-serv | {"level":30,"time":1766501305706,"pid":62782,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+4|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+4|lms-serv | ✅ Server running on port 5000 with Socket.IO
+4|lms-serv | ⚠️ Server continues running.
+4|lms-serv | ✅ Redis connected (Upstash)
+4|lms-serv | ✅ Redis ping successful: PONG
+4|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ⚙️  override existing env vars with { override: true }
+4|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+--
+4|lms-serv |    Path: /usr/bin/soffice
+4|lms-serv |    Available: ✅ YES
+4|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+4|lms-serv | {"level":30,"time":1766501420426,"pid":63037,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+4|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+4|lms-serv | ✅ Server running on port 5000 with Socket.IO
+4|lms-serv | ⚠️ Server continues running.
+4|lms-serv | ✅ Redis connected (Upstash)
+4|lms-serv | ✅ Redis ping successful: PONG
+4|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+4|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+--
+4|lms-serv |    Path: /usr/bin/soffice
+4|lms-serv |    Available: ✅ YES
+4|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+4|lms-serv | {"level":30,"time":1766501602669,"pid":63298,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+4|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+4|lms-serv | ✅ Server running on port 5000 with Socket.IO
+4|lms-serv | ⚠️ Server continues running.
+4|lms-serv | ✅ Redis connected (Upstash)
+4|lms-serv | ✅ Redis ping successful: PONG
+4|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+4|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+--
+4|lms-serv |    Path: /usr/bin/soffice
+4|lms-serv |    Available: ✅ YES
+4|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+4|lms-serv | {"level":30,"time":1766501707400,"pid":63551,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+4|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+4|lms-serv | ✅ Server running on port 5000 with Socket.IO
+4|lms-serv | ⚠️ Server continues running.
+4|lms-serv | ✅ Redis connected (Upstash)
+4|lms-serv | ✅ Redis ping successful: PONG
+4|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+4|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+--
+4|lms-serv |    Path: /usr/bin/soffice
+4|lms-serv |    Available: ✅ YES
+4|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+4|lms-serv | {"level":30,"time":1766501846275,"pid":63822,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+4|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+4|lms-serv | ✅ Server running on port 5000 with Socket.IO
+4|lms-serv | ⚠️ Server continues running.
+4|lms-serv | ✅ Redis connected (Upstash)
+4|lms-serv | ✅ Redis ping successful: PONG
+4|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+4|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+--
+4|lms-serv |    Path: /usr/bin/soffice
+4|lms-serv |    Available: ✅ YES
+4|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+4|lms-serv | {"level":30,"time":1766501930983,"pid":64070,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+4|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+4|lms-serv | ✅ Server running on port 5000 with Socket.IO
+4|lms-serv | ⚠️ Server continues running.
+4|lms-serv | ✅ Redis connected (Upstash)
+4|lms-serv | ✅ Redis ping successful: PONG
+4|lms-serv | [dotenv@17.2.3] injecting env (15) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+4|lms-serv | [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+--
+4|lms-serv |    Path: /usr/bin/soffice
+4|lms-serv |    Available: ✅ YES
+4|lms-serv |    Version: LibreOffice 7.3.7.2 30(Build:2)
+4|lms-serv | {"level":30,"time":1766501979307,"pid":64266,"hostname":"srv1213809","msg":"[LogRotation] Log rotation cron job registered (runs daily at 3:00 AM UTC)"}
+4|lms-serv | ✅ [LogRotation] Log rotation cron job registered
+4|lms-serv | ✅ Server running on port 5000 with Socket.IO
+4|lms-serv | ✅ MySQL connected successfully!
+4|lms-serv | ✅ Redis connected (Upstash)
+4|lms-serv | ✅ Redis ping successful: PONG
+4|lms-serv | 💾 Cache SET: cache:/api/admin/stats:{} (60s)
+4|lms-serv | {"level":30,"time":1766502186838,"pid":64266,"hostname":"srv1213809","event":"system_log","user_id":1,"role":"admin","action":"Logged In Login Logout","endpoint":"/login/logout","method":"POST","msg":"Admin POST /login/logout"}
+root@srv1213809:~# # Test the notifications endpoint
+echo "=== Testing Notifications Endpoint ==="
+curl -s http://localhost:5000/api/notifications?limit=50 2>&1 | head -50
+
+# Test the admin users endpoint
+echo ""
+echo "=== Testing Admin Users Endpoint ==="
+curl -s http://localhost:5000/api/admin/users?page=1&limit=50 2>&1 | head -50
+
+# Check if chat routes exist
+echo ""
+echo "=== Checking Chat Routes ==="
+ls -la /var/www/lms-app/backend/routes/ | grep chat
+=== Testing Notifications Endpoint ===
+{"success":false,"message":"No authorization header provided. Please log in again."}
+=== Testing Admin Users Endpoint ===
+[1] 65285
+
+=== Checking Chat Routes ===
+-rw-r--r--  1 www-data www-data   1436 Dec 23 14:08 chat.js
+root@srv1213809:~# {"success":false,"message":"No authorization header provided. Please log in again."}

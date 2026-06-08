@@ -1,0 +1,8 @@
+node_modules/
+.next/
+backend/node_modules/
+backend/logs/
+*.log
+.env
+backups/
+tsconfig.tsbuildinfo
